@@ -1,34 +1,35 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const foodApiRouter = require('./routes/api/food'); // New food API routes
 
 const app = express();
 
-// Middleware to serve static files
+// Middleware
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware to parse form data
-app.use(bodyParser.urlencoded({ extended: true }));
+// View engine setup (if using)
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-// Route for the login page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// Routes
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/api/food', foodApiRouter); // Mount food API routes
 
-// Route to handle login form submission
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-
-    // Basic validation
-    if (!username || !password) {
-        return res.status(400).send('Username and password are required');
-    }
-
-    // Log the login attempt (replace with database check in production)
-    console.log(`Login attempt: ${username}`);
-
-    // Redirect to a success page or back to login with a message
-    res.redirect('/?message=Login+attempt+recorded');
+// Error handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({ error: err.message });
 });
 
 module.exports = app;
