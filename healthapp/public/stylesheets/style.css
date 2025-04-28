@@ -20,10 +20,7 @@ body {
 }
 
 .logo {
-  padding-top: 45px;
-  text-align: center;
-  margin-bottom: 30px;
-  
+  font-size: 1.5rem;
 }
 
 .logo h1 {
@@ -150,9 +147,84 @@ body {
 .register-link a:hover {
   text-decoration: underline;
 }
+header {
+  background-color: #468fe2;
+  padding: 1rem 2rem;
+  color: white;
+}
+/* All contents within navbar*/ 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+
+
+
+/* Background picture of gym*/
+.gym_pic {
+  background: url('gym_pic.jpg') no-repeat center center/cover;
+  color: white;
+  text-align: center;
+  padding: 6rem 2rem;
+  position: relative;
+}
+
+.gym_pic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.gym_pic-content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.gym_pic h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.gym_pic p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.menu-links {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+
+.menu-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.menu-links li a:hover {
+  text-decoration: underline;
+}
 
 /* Responsive Design - Web View */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .container {
       flex-direction: row;
       align-items: center;
@@ -170,5 +242,21 @@ body {
       flex: 1;
       max-width: 400px;
       margin: 0;
+  }
+  .menu-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+    background: #468fe2;
+    padding: 1rem 0;
+  }
+
+  .menu-toggle:checked + .hamburger + .menu-links {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
   }
 }
