@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | HealthApp</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="container">
+            <h1>HealthApp</h1>
+            <nav>
+                <a href="#" class="active">Dashboard</a>
+                <a href="#">Food</a>
+                <a href="#">Exercise</a>
+                <a href="#">Progress</a>
+                <button id="logoutBtn">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="daily-summary">
+            <h2>Today's Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>Calories</h3>
+                    <div class="progress-circle" data-value="1200" data-max="2000">
+                        <span class="value">1200</span>
+                        <span class="label">/ 2000 kcal</span>
+                    </div>
+                </div>
+                
+                <div class="macros">
+                    <div class="macro">
+                        <h4>Protein</h4>
+                        <div class="progress-bar" data-value="80" data-max="150"></div>
+                        <span>80/150g</span>
+                    </div>
+                    <div class="macro">
+                        <h4>Carbs</h4>
+                        <div class="progress-bar" data-value="180" data-max="250"></div>
+                        <span>180/250g</span>
+                    </div>
+                    <div class="macro">
+                        <h4>Fat</h4>
+                        <div class="progress-bar" data-value="45" data-max="65"></div>
+                        <span>45/65g</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Food Log -->
+        <section class="food-log">
+            <h2>Today's Food</h2>
+            <div class="meal">
+                <h3>Breakfast</h3>
+                <ul class="food-items">
+                    <li>
+                        <span class="food-name">Oatmeal</span>
+                        <span class="food-calories">300 kcal</span>
+                    </li>
+                    <li>
+                        <span class="food-name">Banana</span>
+                        <span class="food-calories">105 kcal</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <button class="add-food">+ Add Food</button>
+        </section>
+
+        <!-- Water Intake -->
+        <section class="water-intake">
+            <h2>Water</h2>
+            <div class="water-bottles">
+                <div class="bottle active"></div>
+                <div class="bottle active"></div>
+                <div class="bottle active"></div>
+                <div class="bottle"></div>
+                <div class="bottle"></div>
+                <div class="bottle"></div>
+                <div class="bottle"></div>
+                <div class="bottle"></div>
+            </div>
+            <span>3/8 glasses</span>
+        </section>
+    </main>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
