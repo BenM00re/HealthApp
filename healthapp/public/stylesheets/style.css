@@ -21,7 +21,7 @@ body {
 
 .logo {
   font-size: 1.5rem;
-  text-align: center;
+text-align: center;
 }
 
 .logo h1 {
@@ -155,11 +155,6 @@ body {
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 4px;
-}
-header {
-  background-color: #468fe2;
-  padding: 1rem 2rem;
-  color: white;
 }
 /* All contents within navbar*/ 
 .navbar {
