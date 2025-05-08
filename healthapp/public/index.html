@@ -15,9 +15,6 @@
         <div class="login-container">
             <h2>Login</h2>
             
-            <!-- Added error message display -->
-            <div id="error-message" class="alert" style="display:none"></div>
-            <div id="success-message" class="alert success" style="display:none"></div>
             <!-- Fixed form - added name attributes and proper structure -->
             <form class="login-form" action="/auth/login" method="POST">
                 <div class="form-group">
@@ -29,6 +26,10 @@
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
+                
+                <!-- Added error message display -->
+                <div id="error-message" class="alert" style="display:none"></div>
+                <div id="success-message" class="alert success" style="display:none"></div>
                 
                 <button type="submit" class="login-btn">Login</button>
             </form>
