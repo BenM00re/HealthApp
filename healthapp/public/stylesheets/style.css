@@ -12,6 +12,12 @@ body {
   line-height: 1.6;
 }
 
+header {
+  background-color: #468fe2;
+  padding: 1rem 2rem;
+  color: white;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -229,7 +235,7 @@ body {
 }
 
 /* Responsive Design - Web View */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .container {
       flex-direction: row;
       align-items: center;
