@@ -215,6 +215,40 @@ header {
 }
 
 
+/* Sign up button contain with gym_pic */ 
+.sign-up-button { 
+  background-color: transparent;
+  color: white;
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sign-up-button::before { 
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 177, 92, 0.8);
+  color: white;
+  z-index: -1;
+  border-radius: 10px;
+}
+.sign-up-button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0.5rem;
+  width: 0%;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+.sign-up-button:hover::after {
+  width: 100%;
+}
 
 
 
