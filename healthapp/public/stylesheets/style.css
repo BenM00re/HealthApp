@@ -215,6 +215,39 @@ header {
   margin-bottom: 2rem;
 }
 
+
+
+
+
+
+/* Feature boxes on home page*/
+.features { 
+  padding: 4rem 2rem;
+  justify-content: center;
+  gap: 2rem;
+  display: flex;
+  background-color: #f9f9f9;
+}
+
+article {
+  display: block;
+  unicode-bidi: isolate;
+}
+.features_box { 
+  
+  background-color: white;
+  box-sizing: 1rem;
+  padding: 2.5rem;
+  text-align: center;
+}
+.features_box h1 {
+  color:#2980b9;
+}
+
+
+
+
+
 .menu-toggle {
   display: none;
 }
