@@ -12,7 +12,7 @@ router.get('/nutrition', async (req, res) => {
     }
 
     try {
-        // Step 1: Search for the ingredient
+        
         const searchResponse = await axios.get('https://api.spoonacular.com/food/ingredients/search', {
             params: {
                 apiKey: SPOONACULAR_API_KEY,
@@ -27,7 +27,7 @@ router.get('/nutrition', async (req, res) => {
 
         const ingredientId = searchResponse.data.results[0].id;
 
-        // Step 2: Get detailed nutrition information for the ingredient
+        
         const nutritionResponse = await axios.get(`https://api.spoonacular.com/food/ingredients/${ingredientId}/information`, {
             params: {
                 apiKey: SPOONACULAR_API_KEY,
@@ -70,7 +70,7 @@ router.get('/grocery-products', async (req, res) => {
     }
 
     try {
-        // Step 1: Search for products
+        
         const searchResponse = await axios.get('https://api.spoonacular.com/food/products/search', {
             params: {
                 apiKey: SPOONACULAR_API_KEY,
@@ -79,7 +79,7 @@ router.get('/grocery-products', async (req, res) => {
                 maxCalories,
                 minProtein,
                 maxProtein,
-                number: 10, // Limit the number of results
+                number: 3, // Limit the number of results
                 addProductInformation: true // Include additional product information
             }
         });
@@ -88,7 +88,7 @@ router.get('/grocery-products', async (req, res) => {
             return res.status(404).json({ success: false, error: 'No products found' });
         }
 
-        // Step 2: Fetch detailed product information for each product
+        
         const products = await Promise.all(
             searchResponse.data.products.map(async (product) => {
                 try {
