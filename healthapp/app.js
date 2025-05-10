@@ -1,9 +1,13 @@
 const express = require('express');
+const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
 const crypto = require('crypto');
 const app = express();
-
+require('dotenv').config({ path: path.join(__dirname, 'apikey.env') });
+const API_KEY = process.env.SPOONACULAR_API_KEY;
+const food = require('./routes/food');
+app.use('/api/spoonacular', food);
 // Constants
 const USERS_FILE = path.join(__dirname, 'data', 'users.json');
 const TOKENS_FILE = path.join(__dirname, 'data', 'tokens.json');
@@ -21,7 +25,9 @@ async function readJsonFile(filePath) {
         throw err;
     }
 }
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'home_public.html'));
+});
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
