@@ -165,7 +165,18 @@ body {
     height: 80%;
     border-radius: 2px;
 }
+/* Dash Welcome User box */
 
+.welcome_block {
+    background: linear-gradient(to right, #468fe2, #00C48C);color: white;
+    padding: 4rem 1.5rem;
+    border-radius: 1rem;
+
+}
+
+.welcome_text {
+    text-align: center;
+}
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
     .dashboard-header .container {
