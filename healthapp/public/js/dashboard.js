@@ -1,11 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Check authentication
-    const authToken = localStorage.getItem('authToken');
-    if (!authToken) {
-        window.location.href = '/index.html';
-        return;
-    }
-
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('authToken');
