@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv')
+const morgan = require('morgan')
 const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
@@ -7,10 +9,46 @@ const app = express();
 require('dotenv').config({ path: path.join(__dirname, 'apikey.env') });
 const API_KEY = process.env.SPOONACULAR_API_KEY;
 const food = require('./routes/food');
+const connectDB = require('./config/db')
+const passport = require('passport')
+const session = require('express-session')
 app.use('/api/spoonacular', food);
 // Constants
 const USERS_FILE = path.join(__dirname, 'data', 'users.json');
 const TOKENS_FILE = path.join(__dirname, 'data', 'tokens.json');
+
+// Load config
+dotenv.config({ path: './config/config.env'})
+
+//passport config
+require('./config/passport')(passport)
+
+//session middleware
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}))
+
+//passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
+
+connectDB()
+
+app.use('/auth', require('./routes/auth'))
+
+const PORT = process.env.PORT || 3000
+
+app.listen(
+    PORT,
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+)
+
+//logging in dev mode
+if (process.env.NODE_ENV === 'devolopment'){
+    app.use(morgan('dev'))
+}
 
 // Improved JSON file reading function
 async function readJsonFile(filePath) {
