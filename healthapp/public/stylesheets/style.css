@@ -13,7 +13,7 @@ body {
 }
 
 header {
-  background-color: #468fe2;
+  background-color: #68a6ed;
   padding: 1rem 2rem;
   color: white;
 }
@@ -24,7 +24,9 @@ header {
   min-height: 100vh;
   padding: 20px;
 }
-
+.container h1 {
+  text-align: center;
+}
 .logo {
   font-size: 1.5rem;
   text-align: center;
@@ -35,8 +37,7 @@ header {
   font-size: 2.5rem;
   color: #2c3e50;
   font-style: italic;
-  background: rgb(251, 223, 207);
-  border-radius: 10px;
+  background: #428ce1;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -49,6 +50,7 @@ header {
   max-width: 500px;
   width: 100%;
   margin: 0 auto;
+
 }
 
 .login-container h2 {
@@ -314,36 +316,105 @@ article {
   text-decoration: none;
   font-weight: bold;
 }
+
+/* Reviews */
+
+.reviews { 
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+.reviews h1 {
+  margin: 0;
+  text-align: center;
+  background-color: grey;
+  margin: 0;
+  padding: 2rem 1rem;
+  color: black;
+}
+
+.reviews > div {
+  display: flex;
+  background-color: white;
+  flex-wrap: wrap;
+  padding: 2rem;
+  gap: 1rem;
+}
+.reviews p { 
+  padding: 4rem 2rem;
+}
+.reviews_article {
+  background-color: #eee;
+  border-radius: 1rem;
+  padding: 2rem;
+}
+  
+
+footer { 
+  background-color: black;
+}
+footer p {
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  padding: 2rem;
+}
 /* Responsive Design - Web View */
+/* Responsive Design – Mobile (max-width: 768px) */
 @media (max-width: 768px) {
+  /* 1) Global container stays column */
   .container {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-      padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    padding-top: 4rem;
   }
-  
-  
-  
+
+  /* 2) Login form fills width with small side margins */
   .login-container {
-      flex: 1;
-      max-width: 400px;
-      margin: 0;
+    max-width: 100%;
+    margin: 0 auto;
   }
+
+  /* 3) Hamburger nav */
   .menu-links {
     display: none;
     flex-direction: column;
     width: 100%;
     margin-top: 1rem;
-    background: #468fe2;
+    background: #68a6ed;
     padding: 1rem 0;
   }
-
   .menu-toggle:checked + .hamburger + .menu-links {
     display: flex;
   }
-
   .hamburger {
     display: block;
+  }
+  .features {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+  .features_box {
+    flex: 1 1 100%;
+    padding: 1.5;;
+  }
+
+  .reviews > div {
+    display: flex;       
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .reviews_article {
+    flex: 1 1 100%;
+    padding: 1.5rem 1rem;
+  }
+  .reviews_article p {
+    padding: 0;
+    margin: 0;
   }
 }
