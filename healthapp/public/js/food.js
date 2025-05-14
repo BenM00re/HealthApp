@@ -2,24 +2,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check authentication
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('authToken');
         window.location.href = '/index.html';
     });
 });
 
-// Handle "Search Grocery Products" form submission
+// Handle "Search Grocery Products/Ingredients" form submission
 document.getElementById('groceryForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const groceryName = document.getElementById('groceryName').value;
+    const groceryType = document.getElementById('groceryType').value;
 
     if (!groceryName) {
-        alert('Please enter a product name.');
+        alert('Please enter a product or ingredient name.');
         return;
     }
 
     try {
-        const response = await fetch(`/api/spoonacular/grocery-products?query=${encodeURIComponent(groceryName)}`);
+        const response = await fetch(`/api/spoonacular/grocery-products?query=${encodeURIComponent(groceryName)}&type=${encodeURIComponent(groceryType)}`);
         const data = await response.json();
 
         if (data.success) {
@@ -60,10 +60,10 @@ document.getElementById('groceryForm').addEventListener('submit', async (event) 
                 });
             });
         } else {
-            alert('No products found.');
+            alert('No products or ingredients found.');
         }
     } catch (error) {
-        console.error('Error fetching grocery products:', error);
+        console.error('Error fetching grocery products/ingredients:', error);
         alert('An error occurred. Please try again.');
     }
 });

@@ -51,7 +51,32 @@ input[type="number"] {
     font-size: 1rem;
     box-sizing: border-box;
 }
+select, 
+select#groceryType {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
 
+select#groceryType:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.form-group label[for="groceryType"] {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
 .submit-btn {
     background-color: #3498db;
     color: white;

@@ -14,11 +14,6 @@ const session = require('express-session');
 const passport = require('passport');
 const foodlogRoutes = require('./routes/foodlog');
 const User = require('./models/users');
-
-// Constants
-const USERS_FILE = path.join(__dirname, 'data', 'users.json');
-const TOKENS_FILE = path.join(__dirname, 'data', 'tokens.json');
-
 // ===== MIDDLEWARE ORDER MATTERS =====
 
 // Session and passport middleware
@@ -60,54 +55,6 @@ app.use(cors({
 app.use('/api/spoonacular', food);
 app.use('/food', foodlogRoutes);
 app.use('/auth', require('./routes/auth'));
-
-// Improved JSON file reading function
-async function readJsonFile(filePath) {
-    try {
-        const data = await fs.readFile(filePath, 'utf8');
-        return data.trim() ? JSON.parse(data) : [];
-    } catch (err) {
-        if (err.code === 'ENOENT') {
-            await fs.writeFile(filePath, '[]');
-            return [];
-        }
-        throw err;
-    }
-}
-
-// Initialize data files
-async function init() {
-    try {
-        await fs.mkdir(path.dirname(USERS_FILE), { recursive: true });
-        await Promise.all([
-            fs.writeFile(USERS_FILE, '[]').catch(() => {}),
-            fs.writeFile(TOKENS_FILE, '{}').catch(() => {})
-        ]);
-    } catch (err) {
-        console.error('Initialization error:', err);
-    }
-}
-
-// Auth Middleware for custom token system
-async function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader?.split(' ')[1];
-
-    if (!token) return res.sendStatus(401);
-
-    try {
-        const tokens = await fs.readFile(TOKENS_FILE, 'utf8');
-        const tokensObj = tokens.trim() ? JSON.parse(tokens) : {};
-        if (tokensObj[token]) {
-            req.user = tokensObj[token];
-            return next();
-        }
-    } catch (err) {
-        console.error('Token verification error:', err);
-    }
-
-    return res.sendStatus(403);
-}
 
 // Registration (MongoDB)
 app.post('/auth/register', async (req, res) => {

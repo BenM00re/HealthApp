@@ -25,14 +25,21 @@
 
     <main class="container">
         <section class="grocery-search">
-            <h2>Search Grocery Products</h2>
+            <h2>Search Grocery Products / Ingredients</h2>
             <form id="groceryForm">
-                <div class="form-group">
-                    <label for="groceryName">Product Name:</label>
-                    <input type="text" id="groceryName" name="groceryName" placeholder="e.g., Milk" required>
-                </div>
-                <button type="submit" class="submit-btn">Search Products</button>
-            </form>
+    <div class="form-group">
+        <label for="groceryType">Type:</label>
+        <select id="groceryType" name="groceryType">
+            <option value="grocery" selected>Grocery Product</option>
+            <option value="ingredient">Ingredient</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="groceryName">Product/Ingredient Name:</label>
+        <input type="text" id="groceryName" name="groceryName" placeholder="e.g., Milk or Chicken" required>
+    </div>
+    <button type="submit" class="submit-btn">Search</button>
+</form>
             <div id="groceryResults" style="display: none;">
                 <h3>Results:</h3>
                 <ul id="groceryList"></ul>

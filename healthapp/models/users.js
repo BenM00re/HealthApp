@@ -17,7 +17,7 @@ const FoodLogSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
     username: { type: String, unique: true, sparse: true },
     email: { type: String, unique: true, sparse: true },
-    password: { type: String }, // hashed password for local users
+    password: { type: String },
     googleId: { type: String, unique: true, sparse: true, required: false }, // <-- not required
     displayName: { type: String, required: false },
     firstName: { type: String, required: false },

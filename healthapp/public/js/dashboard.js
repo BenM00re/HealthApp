@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', async () => {
-        // Optionally, you can call a logout endpoint if you implement one
         window.location.href = '/index.html';
     });
 
@@ -46,12 +45,35 @@ document.addEventListener('DOMContentLoaded', async () => {
                 li.innerHTML = `
                     <span class="food-name">${entry.food} (${entry.quantity}g)</span>
                     <span class="food-calories">${entry.calories} kcal</span>
-                `;
+                    <button class="remove-entry-btn" data-entry-id="${entry._id}">X</button>
+                    `;
                 foodItems.appendChild(li);
             });
         }
-
-        // Update summary
+        // Add event listeners for remove buttons
+        foodItems.querySelectorAll('.remove-entry-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const entryId = e.target.getAttribute('data-entry-id');
+                const date = logDateInput.value;
+                if (confirm('Remove this entry?')) {
+                    try {
+                        const res = await fetch(`/food/log/${date}/${entryId}`, {
+                            method: 'DELETE',
+                            credentials: 'include'
+                        });
+                        const result = await res.json();
+                        if (result.success) {
+                            loadFoodLog(date); // Reload log after deletion
+                        } else {
+                            alert('Failed to remove entry.');
+                        }
+                    } catch {
+                        alert('Failed to remove entry.');
+                    }
+                }
+            });
+        });
+        // Calculate totals
         let totalCalories = 0, totalProtein = 0, totalCarbs = 0, totalFat = 0;
         logs.forEach(entry => {
             totalCalories += parseFloat(entry.calories);
@@ -60,11 +82,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             totalFat += parseFloat(entry.fat);
         });
 
-        // Update summary values (if you have elements for these)
-        const calCircle = document.querySelector('.progress-circle');
-        if (calCircle) {
-            calCircle.querySelector('.value').textContent = totalCalories.toFixed(0);
+        // Update summary values and progress indicators
+        const calBar = document.querySelector('.calories-bar');
+        const calLabel = document.querySelector('.calories-label');
+        if (calBar && calLabel) {
+            calBar.setAttribute('data-value', totalCalories.toFixed(0));
+            calBar.setAttribute('data-max', 2000); // or your preferred max
+            calLabel.textContent = `${totalCalories.toFixed(0)}/2000 kcal`;
         }
+
         // Update macros
         const macroSpans = document.querySelectorAll('.macro span');
         if (macroSpans.length === 3) {
@@ -72,6 +98,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             macroSpans[1].textContent = `${totalCarbs.toFixed(0)}/250g`;
             macroSpans[2].textContent = `${totalFat.toFixed(0)}/65g`;
         }
+
+        // Update protein bar
+        const proteinBar = document.querySelector('.protein-bar');
+        const proteinLabel = document.querySelector('.protein-label');
+        if (proteinBar && proteinLabel) {
+            proteinBar.setAttribute('data-value', totalProtein.toFixed(0));
+            proteinBar.setAttribute('data-max', 150);
+            proteinLabel.textContent = `${totalProtein.toFixed(0)}/150g`;
+        }
+
+        // Update carbs bar
+        const carbsBar = document.querySelector('.carbs-bar');
+        const carbsLabel = document.querySelector('.carbs-label');
+        if (carbsBar && carbsLabel) {
+            carbsBar.setAttribute('data-value', totalCarbs.toFixed(0));
+            carbsBar.setAttribute('data-max', 250);
+            carbsLabel.textContent = `${totalCarbs.toFixed(0)}/250g`;
+        }
+
+        // Update fat bar
+        const fatBar = document.querySelector('.fat-bar');
+        const fatLabel = document.querySelector('.fat-label');
+        if (fatBar && fatLabel) {
+            fatBar.setAttribute('data-value', totalFat.toFixed(0));
+            fatBar.setAttribute('data-max', 65);
+            fatLabel.textContent = `${totalFat.toFixed(0)}/65g`;
+        }
+
+        updateProgress();
     }
 
     // Date picker for viewing previous logs
@@ -90,23 +145,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Update progress indicators
     function updateProgress() {
-        // Update circle progress
-        const circle = document.querySelector('.progress-circle');
-        if (circle) {
-            const value = parseInt(circle.getAttribute('data-value'));
-            const max = parseInt(circle.getAttribute('data-max'));
-            const percentage = (value / max) * 100;
-            circle.style.background = `conic-gradient(#4CAF50 0% ${percentage}%, #e0e0e0 ${percentage}% 100%)`;
+        // Calories
+        const calBar = document.querySelector('.calories-bar');
+        if (calBar) {
+            const value = parseInt(calBar.getAttribute('data-value'));
+            const max = parseInt(calBar.getAttribute('data-max'));
+            const percentage = Math.min((value / max) * 100, 100);
+            const fill = calBar.querySelector('.progress-fill');
+            if (fill) fill.style.width = percentage + '%';
         }
-
-        // Update progress bars
-        document.querySelectorAll('.progress-bar').forEach(bar => {
-            const value = parseInt(bar.getAttribute('data-value'));
-            const max = parseInt(bar.getAttribute('data-max'));
-            const percentage = (value / max) * 100;
-            bar.style.setProperty('--progress', `${percentage}%`);
-        });
+        // Protein
+        const proteinBar = document.querySelector('.protein-bar');
+        if (proteinBar) {
+            const value = parseInt(proteinBar.getAttribute('data-value'));
+            const max = parseInt(proteinBar.getAttribute('data-max'));
+            const percentage = Math.min((value / max) * 100, 100);
+            const fill = proteinBar.querySelector('.progress-fill');
+            if (fill) fill.style.width = percentage + '%';
+        }
+        // Carbs
+        const carbsBar = document.querySelector('.carbs-bar');
+        if (carbsBar) {
+            const value = parseInt(carbsBar.getAttribute('data-value'));
+            const max = parseInt(carbsBar.getAttribute('data-max'));
+            const percentage = Math.min((value / max) * 100, 100);
+            const fill = carbsBar.querySelector('.progress-fill');
+            if (fill) fill.style.width = percentage + '%';
+        }
+        // Fat
+        const fatBar = document.querySelector('.fat-bar');
+        if (fatBar) {
+            const value = parseInt(fatBar.getAttribute('data-value'));
+            const max = parseInt(fatBar.getAttribute('data-max'));
+            const percentage = Math.min((value / max) * 100, 100);
+            const fill = fatBar.querySelector('.progress-fill');
+            if (fill) fill.style.width = percentage + '%';
+        }
     }
-
-    updateProgress();
 });

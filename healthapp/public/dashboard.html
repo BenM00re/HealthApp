@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | HealthApp</title>
     <link rel="stylesheet" href="/stylesheets/dashboard.css">
 </head>
+
 <body>
     <header class="dashboard-header">
         <div class="container">
@@ -33,28 +35,36 @@
             <h2>Today's Summary</h2>
             <div class="summary-grid">
                 <div class="summary-card">
-                    <h3>Calories</h3>
-                    <div class="progress-circle" data-value="1200" data-max="2000">
-                        <span class="value">1200</span>
-                        <span class="label">/ 2000 kcal</span>
+                    <div class="macro">
+                        <label>Calories</label>
+                        <div class="progress-bar calories-bar" data-value="0" data-max="2000">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="calories-label">0/2000 kcal</span>
                     </div>
                 </div>
-                
+
                 <div class="macros">
                     <div class="macro">
-                        <h4>Protein</h4>
-                        <div class="progress-bar" data-value="80" data-max="150"></div>
-                        <span>80/150g</span>
+                        <label>Protein</label>
+                        <div class="progress-bar protein-bar" data-value="0" data-max="150">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="protein-label">0/150g</span>
                     </div>
                     <div class="macro">
-                        <h4>Carbs</h4>
-                        <div class="progress-bar" data-value="180" data-max="250"></div>
-                        <span>180/250g</span>
+                        <label>Carbs</label>
+                        <div class="progress-bar carbs-bar" data-value="0" data-max="250">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="carbs-label">0/250g</span>
                     </div>
                     <div class="macro">
-                        <h4>Fat</h4>
-                        <div class="progress-bar" data-value="45" data-max="65"></div>
-                        <span>45/65g</span>
+                        <label>Fat</label>
+                        <div class="progress-bar fat-bar" data-value="0" data-max="65">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="fat-label">0/65g</span>
                     </div>
                 </div>
             </div>
@@ -62,16 +72,16 @@
 
         <!-- Food Log -->
         <section class="food-log">
-    <h2>Today's Food</h2>
-    <label for="logDate">View logs for date:</label>
-    <input type="date" id="logDate" style="margin-bottom:1rem;">
-    <div class="meal">
-        <h3>Breakfast</h3>
-        <ul class="food-items">
-        </ul>
-    </div>
-    <button id="add-food">+ Add Food</button>
-</section>
+            <h2>Today's Food</h2>
+            <label for="logDate">View logs for date:</label>
+            <input type="date" id="logDate" style="margin-bottom:1rem;">
+            <div class="meal">
+                <h3>Breakfast</h3>
+                <ul class="food-items">
+                </ul>
+            </div>
+            <button id="add-food">+ Add Food</button>
+        </section>
         </section>
 
         <!-- Water Intake -->
@@ -93,4 +103,5 @@
 
     <script src="/js/dashboard.js"></script>
 </body>
+
 </html>
