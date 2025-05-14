@@ -17,23 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = loginForm.password.value;
 
             try {
-                // Hash password before sending
-                const hashedPassword = await hashPassword(password);
+                // Hash password before sending (if your backend expects it hashed)
+                const plainPassword = password;
                 
                 const response = await fetch('/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         username: username,
-                        password: hashedPassword
-                    })
+                        password: password
+                    }),
+                    credentials: 'include'
                 });
 
                 const result = await response.json();
                 
                 if (result.success) {
-                    // Store the token in localStorage
-                    localStorage.setItem('authToken', result.token);
                     window.location.href = '/dashboard.html';
                 } else {
                     showError(result.error || 'Login failed');
@@ -65,8 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({
                         username: registerForm.username.value,
                         email: registerForm.email.value,
-                        password: hashedPassword
-                    })
+                        password: registerForm.password.value
+                    }),
+                    credentials: 'include'
                 });
 
                 const result = await response.json();

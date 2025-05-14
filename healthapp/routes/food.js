@@ -79,7 +79,7 @@ router.get('/grocery-products', async (req, res) => {
                 maxCalories,
                 minProtein,
                 maxProtein,
-                number: 3, // Limit the number of results
+                number: 1, // Limit the number of results
                 addProductInformation: true // Include additional product information
             }
         });

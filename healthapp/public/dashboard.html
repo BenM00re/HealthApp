@@ -11,7 +11,7 @@
         <div class="container">
             <h1>HealthApp</h1>
             <nav>
-                <a href="home.html"></a>
+                <a href="home.html">Home</a>
                 <a href="dashboard.html" class="active">Dashboard</a>
                 <a href="food.html">Food</a>
                 <a href="#">Exercise</a>
@@ -25,7 +25,7 @@
     <main class="container">
         <section class="welcome_block">
             <div class="welcome_text">
-                <h2>Welcome</h2>
+                <h2>Welcome, <span id="welcome-username">User</span>!</h2>
                 <p>Dashboard containing all tools</p>
             </div>
         </section>
@@ -62,22 +62,16 @@
 
         <!-- Food Log -->
         <section class="food-log">
-            <h2>Today's Food</h2>
-            <div class="meal">
-                <h3>Breakfast</h3>
-                <ul class="food-items">
-                    <li>
-                        <span class="food-name">Oatmeal</span>
-                        <span class="food-calories">300 kcal</span>
-                    </li>
-                    <li>
-                        <span class="food-name">Banana</span>
-                        <span class="food-calories">105 kcal</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <button class="add-food">+ Add Food</button>
+    <h2>Today's Food</h2>
+    <label for="logDate">View logs for date:</label>
+    <input type="date" id="logDate" style="margin-bottom:1rem;">
+    <div class="meal">
+        <h3>Breakfast</h3>
+        <ul class="food-items">
+        </ul>
+    </div>
+    <button id="add-food">+ Add Food</button>
+</section>
         </section>
 
         <!-- Water Intake -->

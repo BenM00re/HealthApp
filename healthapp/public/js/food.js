@@ -1,3 +1,12 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Check authentication
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('authToken');
+        window.location.href = '/index.html';
+    });
+});
+
 // Handle "Search Grocery Products" form submission
 document.getElementById('groceryForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -82,6 +91,57 @@ document.getElementById('logFoodForm').addEventListener('submit', (event) => {
     document.getElementById('carbs').textContent = `${(carbs * multiplier).toFixed(2)} g`;
     document.getElementById('fat').textContent = `${(fat * multiplier).toFixed(2)} g`;
 
-    // Show the nutrition results
+    // Show the nutrition results and "Add to Diary" button
     document.getElementById('nutritionResults').style.display = 'block';
+    document.getElementById('addToDiaryBtn').style.display = 'inline-block';
+
+    // Store calculated values for diary logging
+    document.getElementById('addToDiaryBtn').dataset.food = document.getElementById('selectedFood').value;
+    document.getElementById('addToDiaryBtn').dataset.calories = (calories * multiplier).toFixed(2);
+    document.getElementById('addToDiaryBtn').dataset.protein = (protein * multiplier).toFixed(2);
+    document.getElementById('addToDiaryBtn').dataset.carbs = (carbs * multiplier).toFixed(2);
+    document.getElementById('addToDiaryBtn').dataset.fat = (fat * multiplier).toFixed(2);
+    document.getElementById('addToDiaryBtn').dataset.quantity = quantity;
+});
+
+// Add to Diary button logic
+document.getElementById('addToDiaryBtn').addEventListener('click', async () => {
+    const today = new Date().toISOString().slice(0, 10);
+
+    const logEntry = {
+        food: document.getElementById('addToDiaryBtn').dataset.food,
+        quantity: document.getElementById('addToDiaryBtn').dataset.quantity,
+        calories: document.getElementById('addToDiaryBtn').dataset.calories,
+        protein: document.getElementById('addToDiaryBtn').dataset.protein,
+        carbs: document.getElementById('addToDiaryBtn').dataset.carbs,
+        fat: document.getElementById('addToDiaryBtn').dataset.fat,
+        timestamp: new Date().toISOString()
+    };
+
+    const token = localStorage.getItem('authToken');
+    try {
+        const res = await fetch('/food/log', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                date: today,
+                entry: logEntry
+            })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert('Food logged!');
+            document.getElementById('logFoodSection').style.display = 'none';
+            document.getElementById('nutritionResults').style.display = 'none';
+            document.getElementById('addToDiaryBtn').style.display = 'none';
+        } else {
+            alert('Failed to log food.');
+        }
+    } catch (err) {
+        alert('Error logging food.');
+    }
 });

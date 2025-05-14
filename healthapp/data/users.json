@@ -22,5 +22,17 @@
     "email": "test@test.com",
     "password": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
     "createdAt": "2025-05-13T08:02:51.187Z"
+  },
+  {
+    "username": "balls",
+    "email": "balls@gmail.com",
+    "password": "e9de08263f4ad49131d3dd1dc28694d26baa1e9c3033f39a4885d7690b06d5b3",
+    "createdAt": "2025-05-14T09:33:35.024Z"
+  },
+  {
+    "username": "penis",
+    "email": "penis@gmail.com",
+    "password": "796e43a5a8cdb73b92b5f59eb50610cea3efa8ce229cd7f0557983091b2b4552",
+    "createdAt": "2025-05-14T11:09:30.141Z"
   }
 ]
