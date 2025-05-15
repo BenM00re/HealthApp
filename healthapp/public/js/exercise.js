@@ -25,6 +25,12 @@ form.addEventListener("submit", (e) => {
 });
 
 saveButton.addEventListener("click", async () => {
+
+    if (exercises.length === 0) {
+    alert("You must add at least one exercise before saving a plan.");
+    return;
+  }
+
   try {
     const response = await fetch("/api/exercises", {
       method: "POST",
