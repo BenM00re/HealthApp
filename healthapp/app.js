@@ -24,16 +24,17 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Body parser (for JSON POST bodies)
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use("/api/exercises", require("./routes/exercise"));
 // Static files and home route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home_public.html'));
 });
+
 app.use(express.static(path.join(__dirname, 'public')));
+// Body parser (for JSON POST bodies)
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/api/exercises", require("./routes/exercise"));
+
 
 
 // Logging in dev mode
