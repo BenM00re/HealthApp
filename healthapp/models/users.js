@@ -18,6 +18,30 @@ const FoodLogSchema = new mongoose.Schema({
     date: { type: String, required: true }, // 'YYYY-MM-DD'
     entries: [FoodLogEntrySchema]
 });
+
+
+const ProfileSchema = new mongoose.Schema({
+    gender: String,
+    age: Number,
+    height: Number,
+    weight: Number,
+    activityLevel: Number,
+    calorieGoal: { type: String, enum: ['lose', 'maintain', 'gain'], default: 'maintain' },
+    proteinPercent: { type: Number, default: 30 },
+    carbsPercent: { type: Number, default: 40 },
+    fatPercent: { type: Number, default: 30 },
+    fiberGoal: { type: Number, default: 30 },
+    sugarGoal: { type: Number, default: 50 },
+    cholesterolGoal: { type: Number, default: 300 },
+    loseCalories: Number,
+    maintainCalories: Number,
+    gainCalories: Number,
+    proteinGrams: Number,
+    carbsGrams: Number,
+    fatGrams: Number,
+    lastUpdated: { type: Date, default: Date.now }
+});
+
 const UserSchema = new mongoose.Schema({
     username: { type: String, unique: true, sparse: true },
     email: { type: String, unique: true, sparse: true },
@@ -28,7 +52,8 @@ const UserSchema = new mongoose.Schema({
     lastName: { type: String, required: false },
     image: { type: String },
     createdAt: { type: Date, default: Date.now },
-    foodLogs: [FoodLogSchema]
+    foodLogs: [FoodLogSchema],
+    profile: ProfileSchema
 })
 
 module.exports = mongoose.model('User', UserSchema)

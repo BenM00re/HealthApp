@@ -13,6 +13,7 @@ const connectDB = require('./config/db');
 const session = require('express-session');
 const passport = require('passport');
 const foodlogRoutes = require('./routes/foodlog');
+const profileRoutes = require('./routes/profile');
 const User = require('./models/users');
 // ===== MIDDLEWARE ORDER MATTERS =====
 
@@ -56,6 +57,7 @@ app.use(cors({
 // ===== ROUTES =====
 app.use('/api/spoonacular', food);
 app.use('/food', foodlogRoutes);
+app.use('/profile', profileRoutes);
 app.use('/auth', require('./routes/auth'));
 
 // Registration (MongoDB)
