@@ -43,4 +43,25 @@ router.get("/", ensureAuthenticated, async (req, res) => {
   }
 });
 
+// Delete a workout plan for the logged-in user
+router.delete("/:id", ensureAuthenticated, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await ExercisePlan.findOneAndDelete({
+      _id: id,
+      user: req.user._id
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: "Plan not found or not authorized" });
+    }
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Error deleting plan:", err);
+    return res.status(500).json({ success: false, error: "Failed to delete plan" });
+  }
+});
+
 module.exports = router;

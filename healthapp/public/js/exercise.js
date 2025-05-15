@@ -31,7 +31,7 @@ saveButton.addEventListener("click", async () => {
       headers: {
         "Content-Type": "application/json"
       },
-      credentials: "include", // Send cookies/session
+      credentials: "include",
       body: JSON.stringify({ exercises }) 
     });
 
@@ -55,7 +55,7 @@ saveButton.addEventListener("click", async () => {
 loadButton.addEventListener("click", async () => {
   try {
     const response = await fetch("/api/exercises", {
-      credentials: "include" // Send cookies/session
+      credentials: "include"
     });
 
     const result = await response.json();
@@ -83,6 +83,39 @@ loadButton.addEventListener("click", async () => {
       });
 
       planDiv.appendChild(ul);
+
+      // ✅ Add delete button
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete Plan";
+      deleteButton.addEventListener("click", async () => {
+        if (confirm("Are you sure you want to delete this plan?")) {
+          try {
+            const deleteRes = await fetch(`/api/exercises/${plan._id}`, {
+              method: "DELETE",
+              credentials: "include"
+            });
+
+            const contentType = deleteRes.headers.get("Content-Type");
+            if (!contentType || !contentType.includes("application/json")) {
+              const text = await deleteRes.text();
+              throw new Error("Expected JSON but got:\n" + text);
+            }
+
+            const deleteResult = await deleteRes.json();
+            if (deleteResult.success) {
+              alert("Plan deleted.");
+              loadButton.click(); // Reload
+            } else {
+              alert("Failed to delete plan.");
+            }
+          } catch (err) {
+            console.error("Error deleting plan:", err);
+            alert("An error occurred while deleting the plan.");
+          }
+        }
+      });
+
+      planDiv.appendChild(deleteButton);
       savedPlansDiv.appendChild(planDiv);
     });
   } catch (err) {
