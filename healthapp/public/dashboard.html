@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | HealthApp</title>
     <link rel="stylesheet" href="/stylesheets/dashboard.css">
 </head>
+
 <body>
     <header class="dashboard-header">
         <div class="container">
             <h1>HealthApp</h1>
             <nav>
-                <a href="home.html"></a>
+                <a href="home.html">Home</a>
                 <a href="dashboard.html" class="active">Dashboard</a>
                 <a href="food.html">Food</a>
-                <a href="#">Exercise</a>
+                <a href="exercise.html">Exercise</a>
                 <a href="groups.html">Groups</a>
                 <a href="features.html"> Features </a>
                 <button id="logoutBtn">Logout</button>
@@ -25,7 +27,7 @@
     <main class="container">
         <section class="welcome_block">
             <div class="welcome_text">
-                <h2>Welcome</h2>
+                <h2>Welcome, <span id="welcome-username">User</span>!</h2>
                 <p>Dashboard containing all tools</p>
             </div>
         </section>
@@ -33,28 +35,36 @@
             <h2>Today's Summary</h2>
             <div class="summary-grid">
                 <div class="summary-card">
-                    <h3>Calories</h3>
-                    <div class="progress-circle" data-value="1200" data-max="2000">
-                        <span class="value">1200</span>
-                        <span class="label">/ 2000 kcal</span>
+                    <div class="macro">
+                        <label>Calories</label>
+                        <div class="progress-bar calories-bar" data-value="0" data-max="2000">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="calories-label">0/2000 kcal</span>
                     </div>
                 </div>
-                
+
                 <div class="macros">
                     <div class="macro">
-                        <h4>Protein</h4>
-                        <div class="progress-bar" data-value="80" data-max="150"></div>
-                        <span>80/150g</span>
+                        <label>Protein</label>
+                        <div class="progress-bar protein-bar" data-value="0" data-max="150">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="protein-label">0/150g</span>
                     </div>
                     <div class="macro">
-                        <h4>Carbs</h4>
-                        <div class="progress-bar" data-value="180" data-max="250"></div>
-                        <span>180/250g</span>
+                        <label>Carbs</label>
+                        <div class="progress-bar carbs-bar" data-value="0" data-max="250">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="carbs-label">0/250g</span>
                     </div>
                     <div class="macro">
-                        <h4>Fat</h4>
-                        <div class="progress-bar" data-value="45" data-max="65"></div>
-                        <span>45/65g</span>
+                        <label>Fat</label>
+                        <div class="progress-bar fat-bar" data-value="0" data-max="65">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="fat-label">0/65g</span>
                     </div>
                 </div>
             </div>
@@ -63,21 +73,15 @@
         <!-- Food Log -->
         <section class="food-log">
             <h2>Today's Food</h2>
+            <label for="logDate">View logs for date:</label>
+            <input type="date" id="logDate" style="margin-bottom:1rem;">
             <div class="meal">
                 <h3>Breakfast</h3>
                 <ul class="food-items">
-                    <li>
-                        <span class="food-name">Oatmeal</span>
-                        <span class="food-calories">300 kcal</span>
-                    </li>
-                    <li>
-                        <span class="food-name">Banana</span>
-                        <span class="food-calories">105 kcal</span>
-                    </li>
                 </ul>
             </div>
-            
-            <button class="add-food">+ Add Food</button>
+            <button id="add-food">+ Add Food</button>
+        </section>
         </section>
 
         <!-- Water Intake -->
@@ -99,4 +103,5 @@
 
     <script src="/js/dashboard.js"></script>
 </body>
+
 </html>

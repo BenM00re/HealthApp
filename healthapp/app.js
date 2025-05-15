@@ -1,6 +1,6 @@
 const express = require('express');
-const dotenv = require('dotenv')
-const morgan = require('morgan')
+const dotenv = require('dotenv');
+const morgan = require('morgan');
 const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
@@ -9,171 +9,120 @@ const app = express();
 require('dotenv').config({ path: path.join(__dirname, 'apikey.env') });
 const API_KEY = process.env.SPOONACULAR_API_KEY;
 const food = require('./routes/food');
-const connectDB = require('./config/db')
-const passport = require('passport')
-const session = require('express-session')
-app.use('/api/spoonacular', food);
-// Constants
-const USERS_FILE = path.join(__dirname, 'data', 'users.json');
-const TOKENS_FILE = path.join(__dirname, 'data', 'tokens.json');
+const connectDB = require('./config/db');
+const session = require('express-session');
+const passport = require('passport');
+const foodlogRoutes = require('./routes/foodlog');
+const User = require('./models/users');
+// ===== MIDDLEWARE ORDER MATTERS =====
 
-// Load config
-dotenv.config({ path: './config/config.env'})
-
-//passport config
-require('./config/passport')(passport)
-
-//session middleware
+// Session and passport middleware
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false
-}))
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-//passport middleware
-app.use(passport.initialize())
-app.use(passport.session())
-
-connectDB()
-
-app.use('/auth', require('./routes/auth'))
-
-const PORT = process.env.PORT || 3000
-
-app.listen(
-    PORT,
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
-)
-
-//logging in dev mode
-if (process.env.NODE_ENV === 'devolopment'){
-    app.use(morgan('dev'))
-}
-
-// Improved JSON file reading function
-async function readJsonFile(filePath) {
-    try {
-        const data = await fs.readFile(filePath, 'utf8');
-        return data.trim() ? JSON.parse(data) : {};
-    } catch (err) {
-        if (err.code === 'ENOENT') {
-            await fs.writeFile(filePath, '{}');
-            return {};
-        }
-        throw err;
-    }
-}
+// Body parser (for JSON POST bodies)
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/api/exercises", require("./routes/exercise"));
+// Static files and home route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home_public.html'));
 });
-// Middleware
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
 
-// Initialize data files
-async function init() {
-    try {
-        await fs.mkdir(path.dirname(USERS_FILE), { recursive: true });
-        await Promise.all([
-            fs.writeFile(USERS_FILE, '[]').catch(() => {}),
-            fs.writeFile(TOKENS_FILE, '{}').catch(() => {})
-        ]);
-    } catch (err) {
-        console.error('Initialization error:', err);
-    }
+
+// Logging in dev mode
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
 }
 
-// Auth Middleware
-async function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader?.split(' ')[1];
-    
-    if (!token) return res.sendStatus(401);
+// Load config and passport
+dotenv.config({ path: './config/config.env' });
+require('./config/passport')(passport);
 
-    try {
-        const tokens = await readJsonFile(TOKENS_FILE);
-        if (tokens[token]) {
-            req.user = tokens[token];
-            return next();
-        }
-    } catch (err) {
-        console.error('Token verification error:', err);
-    }
-    
-    return res.sendStatus(403);
-}
+// Connect to MongoDB
+connectDB();
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:3000', // or your frontend URL
+    credentials: true
+}));
+// ===== ROUTES =====
+app.use('/api/spoonacular', food);
+app.use('/food', foodlogRoutes);
+app.use('/auth', require('./routes/auth'));
 
-// Routes
+// Registration (MongoDB)
 app.post('/auth/register', async (req, res) => {
     try {
-        if (!req.body.username || !req.body.email || !req.body.password) {
+        const { username, email, password } = req.body;
+        if (!username || !email || !password) {
             return res.status(400).json({ success: false, error: 'Missing required fields' });
         }
-
-        const users = await readJsonFile(USERS_FILE);
-        if (users.some(u => u.username === req.body.username)) {
-            return res.status(400).json({ success: false, error: 'Username exists' });
+        const existing = await User.findOne({ $or: [{ username }, { email }] });
+        if (existing) {
+            return res.status(400).json({ success: false, error: 'Username or email already exists' });
         }
-
-        const newUser = {
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
-        
+        const user = new User({ username, email, password });
+        await user.save();
         res.json({ success: true, redirect: '/index.html?registration=success' });
-
     } catch (err) {
         console.error('Registration error:', err);
         res.status(500).json({ success: false, error: 'Registration failed' });
     }
 });
 
+// Login (MongoDB, simple version)
 app.post('/auth/login', async (req, res) => {
     try {
-        const users = await readJsonFile(USERS_FILE);
-        const user = users.find(u => u.username === req.body.username && u.password === req.body.password);
-        
+        const { username, password } = req.body;
+        const user = await User.findOne({ username, password });
         if (!user) {
             return res.status(401).json({ success: false, error: 'Invalid credentials' });
         }
-
-        const token = crypto.randomBytes(32).toString('hex');
-        const tokens = await readJsonFile(TOKENS_FILE);
-        
-        tokens[token] = {
-            username: user.username,
-            createdAt: new Date().toISOString()
-        };
-        
-        await fs.writeFile(TOKENS_FILE, JSON.stringify(tokens));
-        
-        res.json({ success: true, token, redirect: '/dashboard.html' });
-
+        // Use Passport session for authentication
+        req.login(user, function(err) {
+            if (err) {
+                return res.status(500).json({ success: false, error: 'Login failed' });
+            }
+            res.json({ success: true, redirect: '/dashboard.html' });
+        });
     } catch (err) {
         console.error('Login error:', err);
         res.status(500).json({ success: false, error: 'Login failed' });
     }
 });
 
-app.get('/auth/verify', authenticateToken, (req, res) => {
-    res.json({ success: true, user: req.user });
-});
-
-app.post('/auth/logout', authenticateToken, async (req, res) => {
-    try {
-        const token = req.headers['authorization'].split(' ')[1];
-        const tokens = await readJsonFile(TOKENS_FILE);
-        delete tokens[token];
-        await fs.writeFile(TOKENS_FILE, JSON.stringify(tokens));
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ success: false });
+app.get('/auth/verify', (req, res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    console.log('SESSION:', req.session);
+    console.log('USER:', req.user);
+    console.log('IS AUTH:', req.isAuthenticated && req.isAuthenticated());
+    if (req.isAuthenticated && req.isAuthenticated()) {
+        res.json({ success: true, user: req.user });
+    } else {
+        res.status(401).json({ success: false, error: 'Not authenticated' });
     }
 });
+
+app.post('/auth/logout', (req, res) => {
+    req.logout(() => {
+        res.json({ success: true });
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(
+    PORT,
+    () => console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+);
 
 module.exports = app;

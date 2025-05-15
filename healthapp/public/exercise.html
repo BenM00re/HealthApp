@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise | HealthApp</title>
+</head>
+<body>
+
+<!-- Header + navbar-->
+<header>
+  <nav class="navbar">
+    <div class="logo">Health Tracker</div>
+    <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+    <label for="menu-toggle" class="hamburger">&#9776;</label>
+    <ul class="menu-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="groups.html">Groups</a></li>
+      <li><a href="register.html">Sign Up</a></li>
+      <li><a href="profile.html">Profile</a></li> 
+      <li><a href="index.html">Login</a></li> 
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <h1>Create Workout Plan</h1>
+
+    <form id="exercise-form">
+      <input type="text" id="exercise-name" placeholder="Exercise Name" required />
+      <input type="number" id="sets" placeholder="Sets" min="1" required />
+      <input type="number" id="reps" placeholder="Reps" min="1" required />
+      <button type="submit">Add Exercise</button>
+    </form>
+
+    <h2>Workout Plan</h2>
+    <ul id="exercise-list"></ul>
+    <button id="save-plan">Save Plan</button>
+    <button id="load-plan">Load Plans</button>
+  </div>
+  <div id="saved-plans-section">
+  <h2>Saved Plans</h2>
+  <div id="saved-plans"></div>
+</div>
+</main>
+
+<script src="js/exercise.js"></script>
+
+</body>
+</html>
