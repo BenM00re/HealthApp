@@ -1,20 +1,27 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
-
 const ExercisePlan = require("../models/ExercisePlan");
 
-// Save a workout plan
-router.post("/", async (req, res) => {
+// Middleware to ensure the user is authenticated
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    return next();
+  }
+  return res.status(401).json({ success: false, error: "Not authenticated" });
+}
+
+// Save a workout plan for the logged-in user
+router.post("/", ensureAuthenticated, async (req, res) => {
   try {
     const { exercises } = req.body;
+
     if (!Array.isArray(exercises)) {
       return res.status(400).json({ success: false, message: "Invalid format" });
     }
 
     const newPlan = new ExercisePlan({
+      user: req.user._id,
       exercises,
-      createdAt: new Date()
     });
 
     await newPlan.save();
@@ -25,11 +32,10 @@ router.post("/", async (req, res) => {
   }
 });
 
-
-// Load all workout plans
-router.get("/", async (req, res) => {
+// Load all workout plans for the logged-in user
+router.get("/", ensureAuthenticated, async (req, res) => {
   try {
-    const plans = await ExercisePlan.find().sort({ createdAt: -1 });
+    const plans = await ExercisePlan.find({ user: req.user._id }).sort({ createdAt: -1 });
     res.json({ success: true, plans });
   } catch (err) {
     console.error("Error loading plans:", err);
