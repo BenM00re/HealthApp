@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid format" });
     }
 
-    const newPlan = new WorkoutPlan({
+    const newPlan = new ExercisePlan({
       exercises,
       createdAt: new Date()
     });
@@ -29,10 +29,10 @@ router.post("/", async (req, res) => {
 // Load all workout plans
 router.get("/", async (req, res) => {
   try {
-    const plans = await WorkoutPlan.find().sort({ createdAt: -1 });
+    const plans = await ExercisePlan.find().sort({ createdAt: -1 });
     res.json({ success: true, plans });
   } catch (err) {
-    console.error("❌ Error loading plans:", err);
+    console.error("Error loading plans:", err);
     res.status(500).json({ success: false, error: "Failed to load plans" });
   }
 });
