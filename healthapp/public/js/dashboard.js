@@ -16,6 +16,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    // Profile settings - default values
+    let profileSettings = {
+        calorieGoal: 'maintain',
+        loseCalories: 1500,
+        maintainCalories: 2000,
+        gainCalories: 2500,
+        proteinGrams: 150,
+        carbsGrams: 250,
+        fatGrams: 65,
+        fiberGoal: 30,
+        sugarGoal: 50,
+        cholesterolGoal: 300
+    };
+
+    // Load profile settings
+    await loadProfileSettings();
+
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', async () => {
         window.location.href = '/index.html';
@@ -100,30 +117,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (entry.cholesterol) totalCholesterol += parseFloat(entry.cholesterol);
         });
 
+        // Get the appropriate calorie goal based on user's preference
+        const calorieGoal = getCalorieGoal();
+        
         // Update summary values and progress indicators
         const calBar = document.querySelector('.calories-bar');
         const calLabel = document.querySelector('.calories-label');
         if (calBar && calLabel) {
             calBar.setAttribute('data-value', totalCalories.toFixed(0));
-            calBar.setAttribute('data-max', 2000); // or your preferred max
-            calLabel.textContent = `${totalCalories.toFixed(0)}/2000 kcal`;
+            calBar.setAttribute('data-max', calorieGoal);
+            calLabel.textContent = `${totalCalories.toFixed(0)}/${calorieGoal} kcal`;
         }
 
-        // Update macros
-        const macroSpans = document.querySelectorAll('.macro span');
-        if (macroSpans.length === 3) {
-            macroSpans[0].textContent = `${totalProtein.toFixed(0)}/150g`;
-            macroSpans[1].textContent = `${totalCarbs.toFixed(0)}/250g`;
-            macroSpans[2].textContent = `${totalFat.toFixed(0)}/65g`;
-        }
-
+        // Update macros with user's goals
         // Update protein bar
         const proteinBar = document.querySelector('.protein-bar');
         const proteinLabel = document.querySelector('.protein-label');
         if (proteinBar && proteinLabel) {
             proteinBar.setAttribute('data-value', totalProtein.toFixed(0));
-            proteinBar.setAttribute('data-max', 150);
-            proteinLabel.textContent = `${totalProtein.toFixed(0)}/150g`;
+            proteinBar.setAttribute('data-max', profileSettings.proteinGrams);
+            proteinLabel.textContent = `${totalProtein.toFixed(0)}/${profileSettings.proteinGrams}g`;
         }
 
         // Update carbs bar
@@ -131,8 +144,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const carbsLabel = document.querySelector('.carbs-label');
         if (carbsBar && carbsLabel) {
             carbsBar.setAttribute('data-value', totalCarbs.toFixed(0));
-            carbsBar.setAttribute('data-max', 250);
-            carbsLabel.textContent = `${totalCarbs.toFixed(0)}/250g`;
+            carbsBar.setAttribute('data-max', profileSettings.carbsGrams);
+            carbsLabel.textContent = `${totalCarbs.toFixed(0)}/${profileSettings.carbsGrams}g`;
         }
 
         // Update fat bar
@@ -140,8 +153,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fatLabel = document.querySelector('.fat-label');
         if (fatBar && fatLabel) {
             fatBar.setAttribute('data-value', totalFat.toFixed(0));
-            fatBar.setAttribute('data-max', 65);
-            fatLabel.textContent = `${totalFat.toFixed(0)}/65g`;
+            fatBar.setAttribute('data-max', profileSettings.fatGrams);
+            fatLabel.textContent = `${totalFat.toFixed(0)}/${profileSettings.fatGrams}g`;
         }
 
         // Update fiber bar
@@ -149,10 +162,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fiberLabel = document.querySelector('.fiber-label');
         if (fiberBar && fiberLabel) {
             fiberBar.setAttribute('data-value', totalFiber.toFixed(0));
-            fiberBar.setAttribute('data-max', 30);
-            fiberLabel.textContent = `${totalFiber.toFixed(0)}/30g Fiber`;
+            fiberBar.setAttribute('data-max', profileSettings.fiberGoal);
+            fiberLabel.textContent = `${totalFiber.toFixed(0)}/${profileSettings.fiberGoal}g Fiber`;
             const fill = fiberBar.querySelector('.vertical-fill');
-            const percent = Math.min((totalFiber / 30) * 100, 100);
+            const percent = Math.min((totalFiber / profileSettings.fiberGoal) * 100, 100);
             if (fill) fill.style.height = percent + '%';
         }
         // Update sugar bar
@@ -160,10 +173,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const sugarLabel = document.querySelector('.sugar-label');
         if (sugarBar && sugarLabel) {
             sugarBar.setAttribute('data-value', totalSugar.toFixed(0));
-            sugarBar.setAttribute('data-max', 50);
-            sugarLabel.textContent = `${totalSugar.toFixed(0)}/50g Sugar`;
+            sugarBar.setAttribute('data-max', profileSettings.sugarGoal);
+            sugarLabel.textContent = `${totalSugar.toFixed(0)}/${profileSettings.sugarGoal}g Sugar`;
             const fill = sugarBar.querySelector('.vertical-fill');
-            const percent = Math.min((totalSugar / 50) * 100, 100);
+            const percent = Math.min((totalSugar / profileSettings.sugarGoal) * 100, 100);
             if (fill) fill.style.height = percent + '%';
         }
         // Update cholesterol bar
@@ -171,14 +184,81 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cholesterolLabel = document.querySelector('.cholesterol-label');
         if (cholesterolBar && cholesterolLabel) {
             cholesterolBar.setAttribute('data-value', totalCholesterol.toFixed(0));
-            cholesterolBar.setAttribute('data-max', 300);
-            cholesterolLabel.textContent = `${totalCholesterol.toFixed(0)}/300mg Cholesterol`;
+            cholesterolBar.setAttribute('data-max', profileSettings.cholesterolGoal);
+            cholesterolLabel.textContent = `${totalCholesterol.toFixed(0)}/${profileSettings.cholesterolGoal}mg Cholesterol`;
             const fill = cholesterolBar.querySelector('.vertical-fill');
-            const percent = Math.min((totalCholesterol / 300) * 100, 100);
+            const percent = Math.min((totalCholesterol / profileSettings.cholesterolGoal) * 100, 100);
             if (fill) fill.style.height = percent + '%';
         }
 
         updateProgress();
+    }
+
+    // Function to get the appropriate calorie goal based on user's preference
+    function getCalorieGoal() {
+        switch (profileSettings.calorieGoal) {
+            case 'lose':
+                return profileSettings.loseCalories;
+            case 'gain':
+                return profileSettings.gainCalories;
+            case 'maintain':
+            default:
+                return profileSettings.maintainCalories;
+        }
+    }
+
+    // Load profile settings from server or localStorage
+    async function loadProfileSettings() {
+        try {
+            // Try to get profile from server 
+            const res = await fetch('/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+            
+            const data = await res.json();
+            
+            if (data.success && data.profile) {
+                // Update profile settings with server data
+                updateProfileSettings(data.profile);
+            } else {
+                // If server request fails or returns no data, try localStorage
+                const localProfile = JSON.parse(localStorage.getItem('healthAppProfile'));
+                if (localProfile) {
+                    updateProfileSettings(localProfile);
+                }
+            }
+        } catch (error) {
+            console.error('Error loading profile settings:', error);
+            // If server request fails, try localStorage
+            try {
+                const localProfile = JSON.parse(localStorage.getItem('healthAppProfile'));
+                if (localProfile) {
+                    updateProfileSettings(localProfile);
+                }
+            } catch (e) {
+                console.error('Could not load profile settings from localStorage:', e);
+                // Keep using default values
+            }
+        }
+    }
+
+    // Update profile settings object with data from server or localStorage
+    function updateProfileSettings(data) {
+        // Only update if values exist and are valid
+        if (data.calorieGoal) profileSettings.calorieGoal = data.calorieGoal;
+        if (data.loseCalories && data.loseCalories > 0) profileSettings.loseCalories = data.loseCalories;
+        if (data.maintainCalories && data.maintainCalories > 0) profileSettings.maintainCalories = data.maintainCalories;
+        if (data.gainCalories && data.gainCalories > 0) profileSettings.gainCalories = data.gainCalories;
+        if (data.proteinGrams && data.proteinGrams > 0) profileSettings.proteinGrams = data.proteinGrams;
+        if (data.carbsGrams && data.carbsGrams > 0) profileSettings.carbsGrams = data.carbsGrams;
+        if (data.fatGrams && data.fatGrams > 0) profileSettings.fatGrams = data.fatGrams;
+        if (data.fiberGoal && data.fiberGoal > 0) profileSettings.fiberGoal = data.fiberGoal;
+        if (data.sugarGoal && data.sugarGoal > 0) profileSettings.sugarGoal = data.sugarGoal;
+        if (data.cholesterolGoal && data.cholesterolGoal > 0) profileSettings.cholesterolGoal = data.cholesterolGoal;
     }
 
     // Date picker for viewing previous logs
