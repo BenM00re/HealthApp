@@ -8,13 +8,6 @@ body {
     padding: 0;
 }
 
-.container {
-    width: 90%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px 0;
-}
-
 /* ===== Grocery Search Section ===== */
 .grocery-search {
     background: white;
