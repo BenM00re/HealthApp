@@ -36,6 +36,8 @@ router.post('/log', ensureAnyAuth, async (req, res) => {
     try {
         let user = await User.findById(req.user.id);
         let log = user.foodLogs.find(l => l.date === date);
+        // Ensure meal field exists
+        if (!entry.meal) entry.meal = 'breakfast';
         if (!log) {
             user.foodLogs.push({ date, entries: [entry] });
         } else {

@@ -7,6 +7,7 @@ const FoodLogEntrySchema = new mongoose.Schema({
     protein: Number,
     carbs: Number,
     fat: Number,
+    meal: { type: String, enum: ['breakfast', 'lunch', 'dinner', 'snack'], default: 'breakfast' },
     timestamp: { type: Date, default: Date.now }
 });
 

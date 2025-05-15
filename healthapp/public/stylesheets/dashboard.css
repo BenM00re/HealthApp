@@ -173,6 +173,78 @@ body {
     height: 80%;
     border-radius: 2px;
 }
+
+.water-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+#water-plus, #water-minus {
+    background: linear-gradient(90deg, #00C48C 0%, #468fe2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(70,143,226,0.10);
+    transition: background 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#water-plus:hover, #water-minus:hover {
+    background: linear-gradient(90deg, #468fe2 0%, #00C48C 100%);
+    transform: scale(1.08);
+}
+.water-bottles {
+    display: flex;
+    gap: 0.5rem;
+}
+.bottle {
+    width: 30px;
+    height: 40px;
+    border: 2px solid #3498db;
+    border-radius: 4px;
+    position: relative;
+    background: #fff;
+    transition: background 0.2s, border-color 0.2s;
+}
+.bottle.filled {
+    background: #3498db;
+    border-color: #00C48C;
+}
+
+.water-ml-input input[type="number"] {
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+}
+.water-ml-input input[type="number"]:focus {
+    border-color: #00C48C;
+}
+.water-ml-input button {
+    background: linear-gradient(90deg, #00C48C 0%, #468fe2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.water-ml-input button:hover {
+    background: linear-gradient(90deg, #468fe2 0%, #00C48C 100%);
+    transform: scale(1.04);
+}
+
 /* Dash Welcome User box */
 
 .welcome_block {
@@ -185,6 +257,39 @@ body {
 .welcome_text {
     text-align: center;
 }
+
+/* ===== Add Food Button ===== */
+#add-food {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #00C48C 0%, #468fe2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    margin: 1.5rem auto 0 auto;
+    box-shadow: 0 2px 8px rgba(70,143,226,0.10);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#add-food:hover {
+    background: linear-gradient(90deg, #468fe2 0%, #00C48C 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(0,196,140,0.15);
+}
+
+#add-food .plus-icon {
+    font-size: 1.3em;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 0.3em;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
     .dashboard-header .container {

@@ -107,6 +107,14 @@ document.getElementById('logFoodForm').addEventListener('submit', (event) => {
 // Add to Diary button logic
 document.getElementById('addToDiaryBtn').addEventListener('click', async () => {
     const today = new Date().toISOString().slice(0, 10);
+    let meal = 'breakfast';
+    const mealSelect = document.getElementById('mealSelect');
+    if (mealSelect) {
+        meal = mealSelect.value;
+    } else if (window.opener && window.opener.document) {
+        const openerMealSelect = window.opener.document.getElementById('mealSelect');
+        if (openerMealSelect) meal = openerMealSelect.value;
+    }
 
     const logEntry = {
         food: document.getElementById('addToDiaryBtn').dataset.food,
@@ -115,6 +123,7 @@ document.getElementById('addToDiaryBtn').addEventListener('click', async () => {
         protein: document.getElementById('addToDiaryBtn').dataset.protein,
         carbs: document.getElementById('addToDiaryBtn').dataset.carbs,
         fat: document.getElementById('addToDiaryBtn').dataset.fat,
+        meal: meal,
         timestamp: new Date().toISOString()
     };
 

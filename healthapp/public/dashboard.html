@@ -16,8 +16,8 @@
                 <a href="home.html">Home</a>
                 <a href="dashboard.html" class="active">Dashboard</a>
                 <a href="food.html">Food</a>
-                <a href="#">Exercise</a>
-                <a href="groups.html">Groups</a>
+                <a href="exercise.html">Exercise</a>
+                <a href="profile.html">Profile</a>
                 <a href="features.html"> Features </a>
                 <button id="logoutBtn">Logout</button>
             </nav>
@@ -75,29 +75,58 @@
             <h2>Today's Food</h2>
             <label for="logDate">View logs for date:</label>
             <input type="date" id="logDate" style="margin-bottom:1rem;">
-            <div class="meal">
-                <h3>Breakfast</h3>
-                <ul class="food-items">
-                </ul>
+            <div style="margin-bottom:1rem;">
+                <label for="mealSelect">Meal:</label>
+                <select id="mealSelect">
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="snack">Snack</option>
+                </select>
             </div>
-            <button id="add-food">+ Add Food</button>
-        </section>
+            <div class="meals">
+                <div class="meal" id="breakfast-section">
+                    <h3>Breakfast</h3>
+                    <ul class="food-items" data-meal="breakfast"></ul>
+                </div>
+                <div class="meal" id="lunch-section">
+                    <h3>Lunch</h3>
+                    <ul class="food-items" data-meal="lunch"></ul>
+                </div>
+                <div class="meal" id="dinner-section">
+                    <h3>Dinner</h3>
+                    <ul class="food-items" data-meal="dinner"></ul>
+                </div>
+                <div class="meal" id="snack-section">
+                    <h3>Snack</h3>
+                    <ul class="food-items" data-meal="snack"></ul>
+                </div>
+            </div>
+            <button id="add-food"><span class="plus-icon">&#43;</span> Add Food</button>
         </section>
 
         <!-- Water Intake -->
         <section class="water-intake">
             <h2>Water</h2>
-            <div class="water-bottles">
-                <div class="bottle active"></div>
-                <div class="bottle active"></div>
-                <div class="bottle active"></div>
-                <div class="bottle"></div>
-                <div class="bottle"></div>
-                <div class="bottle"></div>
-                <div class="bottle"></div>
-                <div class="bottle"></div>
+            <div class="water-controls">
+                <button id="water-minus" aria-label="Remove Water">&#8722;</button>
+                <div class="water-bottles">
+                    <div class="bottle" data-index="0"></div>
+                    <div class="bottle" data-index="1"></div>
+                    <div class="bottle" data-index="2"></div>
+                    <div class="bottle" data-index="3"></div>
+                    <div class="bottle" data-index="4"></div>
+                    <div class="bottle" data-index="5"></div>
+                    <div class="bottle" data-index="6"></div>
+                    <div class="bottle" data-index="7"></div>
+                </div>
+                <button id="water-plus" aria-label="Add Water">&#43;</button>
             </div>
-            <span>3/8 glasses</span>
+            <div class="water-ml-input" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;justify-content:center;">
+                <input type="number" id="water-ml" min="50" step="50" placeholder="ml" style="width:80px;">
+                <button id="add-water-ml" class="btn" style="padding:0.4rem 1rem;">Add ml</button>
+            </div>
+            <span id="water-count-label">0/8 glasses (0 ml)</span>
         </section>
     </main>
 

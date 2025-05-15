@@ -36,22 +36,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             logs = [];
         }
 
-        // Update food log section
-        const foodItems = document.querySelector('.food-items');
-        if (foodItems) {
-            foodItems.innerHTML = '';
-            logs.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span class="food-name">${entry.food} (${entry.quantity}g)</span>
-                    <span class="food-calories">${entry.calories} kcal</span>
-                    <button class="remove-entry-btn" data-entry-id="${entry._id}">X</button>
+        // Group logs by meal
+        const meals = { breakfast: [], lunch: [], dinner: [], snack: [] };
+        logs.forEach(entry => {
+            const meal = entry.meal || 'breakfast';
+            if (meals[meal]) {
+                meals[meal].push(entry);
+            } else {
+                meals['breakfast'].push(entry); // fallback
+            }
+        });
+
+        // Update food log sections for each meal
+        ['breakfast', 'lunch', 'dinner', 'snack'].forEach(meal => {
+            const foodItems = document.querySelector(`.food-items[data-meal="${meal}"]`);
+            if (foodItems) {
+                foodItems.innerHTML = '';
+                meals[meal].forEach(entry => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span class="food-name">${entry.food} (${entry.quantity}g)</span>
+                        <span class="food-calories">${entry.calories} kcal</span>
+                        <button class="remove-entry-btn" data-entry-id="${entry._id}" data-meal="${meal}">X</button>
                     `;
-                foodItems.appendChild(li);
-            });
-        }
+                    foodItems.appendChild(li);
+                });
+            }
+        });
+
         // Add event listeners for remove buttons
-        foodItems.querySelectorAll('.remove-entry-btn').forEach(btn => {
+        document.querySelectorAll('.remove-entry-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const entryId = e.target.getAttribute('data-entry-id');
                 const date = logDateInput.value;
@@ -143,6 +157,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initial load
     loadFoodLog();
 
+    // Add Food button redirects to food.html
+    const addFoodBtn = document.getElementById('add-food');
+    if (addFoodBtn) {
+        addFoodBtn.addEventListener('click', () => {
+            window.location.href = 'food.html';
+        });
+    }
+
     // Update progress indicators
     function updateProgress() {
         // Calories
@@ -182,4 +204,70 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (fill) fill.style.width = percentage + '%';
         }
     }
+
+    // Water logging functionality
+    const waterCountLabel = document.getElementById('water-count-label');
+    const waterBottles = document.querySelectorAll('.water-bottles .bottle');
+    const waterPlus = document.getElementById('water-plus');
+    const waterMinus = document.getElementById('water-minus');
+    const waterMlInput = document.getElementById('water-ml');
+    const addWaterMlBtn = document.getElementById('add-water-ml');
+    const WATER_MAX = 8;
+    const GLASS_ML = 250;
+
+    // Persist water ml per day in localStorage
+    function getWaterKey() {
+        return 'waterMl_' + new Date().toISOString().slice(0, 10);
+    }
+    function getWaterMl() {
+        return parseInt(localStorage.getItem(getWaterKey())) || 0;
+    }
+    function setWaterMl(val) {
+        localStorage.setItem(getWaterKey(), val);
+    }
+    function getWaterGlasses() {
+        return Math.floor(getWaterMl() / GLASS_ML);
+    }
+    function updateWaterUI() {
+        const ml = getWaterMl();
+        const glasses = getWaterGlasses();
+        waterBottles.forEach((bottle, idx) => {
+            if (idx < glasses) {
+                bottle.classList.add('filled');
+            } else {
+                bottle.classList.remove('filled');
+            }
+        });
+        waterCountLabel.textContent = `${glasses}/${WATER_MAX} glasses (${ml} ml)`;
+    }
+    if (waterPlus && waterMinus) {
+        waterPlus.addEventListener('click', () => {
+            let ml = getWaterMl();
+            if (getWaterGlasses() < WATER_MAX) {
+                setWaterMl(ml + GLASS_ML);
+                updateWaterUI();
+            }
+        });
+        waterMinus.addEventListener('click', () => {
+            let ml = getWaterMl();
+            if (ml >= GLASS_ML) {
+                setWaterMl(ml - GLASS_ML);
+                updateWaterUI();
+            }
+        });
+    }
+    if (addWaterMlBtn && waterMlInput) {
+        addWaterMlBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            let ml = parseInt(waterMlInput.value);
+            if (!ml || ml < 50) return;
+            let total = getWaterMl() + ml;
+            // Cap at 8 glasses worth
+            if (total > WATER_MAX * GLASS_ML) total = WATER_MAX * GLASS_ML;
+            setWaterMl(total);
+            updateWaterUI();
+            waterMlInput.value = '';
+        });
+    }
+    updateWaterUI();
 });
