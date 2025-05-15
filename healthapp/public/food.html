@@ -4,33 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food | HealthApp</title>
+    <link rel="stylesheet" href="/stylesheets/dashboard.css">
     <link rel="stylesheet" href="/stylesheets/food.css">
 </head>
 <body>
-    <header class="food-header">
-        <div class="container">
-            <h1>HealthApp</h1>
-            <nav>
-                <a href="home.html">Home</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="food.html" class="active">Food</a>
-                <a href="groups.html">Groups</a>
-                <a href="features.html">Features</a>
-                <button id="logoutBtn">Logout</button>
-            </nav>
-        </div>
-    </header>
+    <header class="dashboard-header">
+    <div class="container">
+        <h1>HealthApp</h1>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="food.html" class="active">Food</a>
+            <a href="#">Exercise</a>
+            <a href="groups.html">Groups</a>
+            <a href="features.html"> Features </a>
+            <button id="logoutBtn">Logout</button>
+        </nav>
+    </div>
+</header>
 
     <main class="container">
         <section class="grocery-search">
-            <h2>Search Grocery Products</h2>
+            <h2>Search Grocery Products / Ingredients</h2>
             <form id="groceryForm">
-                <div class="form-group">
-                    <label for="groceryName">Product Name:</label>
-                    <input type="text" id="groceryName" name="groceryName" placeholder="e.g., Milk" required>
-                </div>
-                <button type="submit" class="submit-btn">Search Products</button>
-            </form>
+    <div class="form-group">
+        <label for="groceryType">Type:</label>
+        <select id="groceryType" name="groceryType">
+            <option value="grocery" selected>Grocery Product</option>
+            <option value="ingredient">Ingredient</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="groceryName">Product/Ingredient Name:</label>
+        <input type="text" id="groceryName" name="groceryName" placeholder="e.g., Milk or Chicken" required>
+    </div>
+    <button type="submit" class="submit-btn">Search</button>
+</form>
             <div id="groceryResults" style="display: none;">
                 <h3>Results:</h3>
                 <ul id="groceryList"></ul>
@@ -58,6 +67,7 @@
                     <li><strong>Carbs:</strong> <span id="carbs"></span></li>
                     <li><strong>Fat:</strong> <span id="fat"></span></li>
                 </ul>
+                <button id="addToDiaryBtn" class="submit-btn" style="margin-top:1rem;display:none;">Add to Diary</button>
             </div>
         </section>
     </main>
