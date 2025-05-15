@@ -119,6 +119,36 @@ body {
     border-bottom: none;
 }
 
+.food-log.dashboard-card {
+    background: linear-gradient(135deg, #f8fafc 80%, #e3f6f3 100%);
+    border: 1.5px solid #e0e7ef;
+    box-shadow: 0 2px 12px rgba(70,143,226,0.07);
+    border-radius: 16px;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    margin-top: 2rem;
+}
+.food-log.dashboard-card h2 {
+    color: #00C48C;
+    font-size: 1.35rem;
+    margin-bottom: 1.2rem;
+}
+.food-log .meals {
+    margin-bottom: 1.2rem;
+}
+.food-log .meal {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(70,143,226,0.04);
+    padding: 1rem 1rem 0.5rem 1rem;
+    margin-bottom: 1rem;
+}
+.food-log .meal h3 {
+    color: #468fe2;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
 /* ===== Buttons ===== */
 .btn {
     display: inline-block;
@@ -323,3 +353,107 @@ body {
     .water-bottle {
         margin-bottom: 0.5rem;
     }
+
+/* ===== Dashboard Flex Row ===== */
+.dashboard-flex-row {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+}
+.stretch-food-log {
+    flex: 2 1 0%;
+    min-width: 0;
+}
+
+/* ===== Nutrients Vertical Card ===== */
+.nutrients-vertical.dashboard-card {
+    flex: 1 1 180px;
+    min-width: 160px;
+    max-width: 220px;
+    background: linear-gradient(135deg, #f8fafc 80%, #e3f6f3 100%);
+    border: 1.5px solid #e0e7ef;
+    box-shadow: 0 2px 12px rgba(70,143,226,0.07);
+    border-radius: 16px;
+    padding: 1.5rem 1rem 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nutrients-vertical h2 {
+    color: #468fe2;
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+/* ===== Vertical Bars ===== */
+.vertical-bars {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.vertical-bar {
+    width: 36px;
+    height: 160px;
+    background: #e0e7ef;
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: 0 1px 4px rgba(70,143,226,0.04);
+}
+
+.vertical-fill {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(180deg, #00C48C 0%, #468fe2 100%);
+    border-radius: 12px 12px 0 0;
+    transition: height 0.5s;
+    height: 0%;
+    z-index: 1;
+}
+
+.fiber-bar .vertical-fill {
+    background: linear-gradient(180deg, #f39c12 0%, #00C48C 100%);
+}
+
+.sugar-bar .vertical-fill {
+    background: linear-gradient(180deg, #ff5a36 0%, #468fe2 100%);
+}
+
+.cholesterol-bar .vertical-fill {
+    background: linear-gradient(180deg, #b388ff 0%, #00C48C 100%);
+}
+
+.vertical-label {
+    position: relative;
+    z-index: 2;
+    font-size: 0.95rem;
+    color: #333;
+    margin-top: 8px;
+    text-align: center;
+    display: block;
+}
+
+/* ===== Responsive for Dashboard Flex Row and Nutrients Vertical Card ===== */
+@media (max-width: 900px) {
+    .dashboard-flex-row {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .stretch-food-log, .nutrients-vertical.dashboard-card {
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+        margin: 0 auto;
+    }
+}

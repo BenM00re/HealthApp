@@ -90,6 +90,9 @@ router.get('/grocery-products', async (req, res) => {
                         const protein = nutrients.find(n => n.name === 'Protein')?.amount || 0;
                         const carbs = nutrients.find(n => n.name === 'Carbohydrates')?.amount || 0;
                         const fat = nutrients.find(n => n.name === 'Fat')?.amount || 0;
+                        const fiber = nutrients.find(n => n.name === 'Fiber')?.amount || 0;
+                        const sugar = nutrients.find(n => n.name === 'Sugar')?.amount || 0;
+                        const cholesterol = nutrients.find(n => n.name === 'Cholesterol')?.amount || 0;
 
                         return {
                             id: ingredient.id,
@@ -98,7 +101,10 @@ router.get('/grocery-products', async (req, res) => {
                             calories,
                             protein,
                             carbs,
-                            fat
+                            fat,
+                            fiber,
+                            sugar,
+                            cholesterol
                         };
                     } catch (error) {
                         console.error(`Error fetching nutrition for ingredient ID ${ingredient.id}:`, error.message);
@@ -143,6 +149,9 @@ router.get('/grocery-products', async (req, res) => {
                         const protein = nutrients.find(n => n.name === 'Protein')?.amount || 0;
                         const carbs = nutrients.find(n => n.name === 'Carbohydrates')?.amount || 0;
                         const fat = nutrients.find(n => n.name === 'Fat')?.amount || 0;
+                        const fiber = nutrients.find(n => n.name === 'Fiber')?.amount || 0;
+                        const sugar = nutrients.find(n => n.name === 'Sugar')?.amount || 0;
+                        const cholesterol = nutrients.find(n => n.name === 'Cholesterol')?.amount || 0;
 
                         return {
                             id: product.id,
@@ -152,6 +161,9 @@ router.get('/grocery-products', async (req, res) => {
                             protein,
                             carbs,
                             fat,
+                            fiber,
+                            sugar,
+                            cholesterol,
                             servings: productDetails.servings || null,
                             caloricBreakdown: productDetails.nutrition?.caloricBreakdown || null
                         };

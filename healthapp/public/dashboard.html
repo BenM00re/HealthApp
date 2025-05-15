@@ -70,40 +70,59 @@
             </div>
         </section>
 
-        <!-- Food Log -->
-        <section class="food-log">
-            <h2>Today's Food</h2>
-            <label for="logDate">View logs for date:</label>
-            <input type="date" id="logDate" style="margin-bottom:1rem;">
-            <div style="margin-bottom:1rem;">
-                <label for="mealSelect">Meal:</label>
-                <select id="mealSelect">
-                    <option value="breakfast">Breakfast</option>
-                    <option value="lunch">Lunch</option>
-                    <option value="dinner">Dinner</option>
-                    <option value="snack">Snack</option>
-                </select>
-            </div>
-            <div class="meals">
-                <div class="meal" id="breakfast-section">
-                    <h3>Breakfast</h3>
-                    <ul class="food-items" data-meal="breakfast"></ul>
+        <!-- Food Log and Nutrients -->
+        <div class="dashboard-flex-row">
+            <section class="food-log dashboard-card stretch-food-log">
+                <h2>Today's Food</h2>
+                <label for="logDate">View logs for date:</label>
+                <input type="date" id="logDate" style="margin-bottom:1rem;">
+                <div style="margin-bottom:1rem;">
+                    <label for="mealSelect">Meal:</label>
+                    <select id="mealSelect">
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="snack">Snack</option>
+                    </select>
                 </div>
-                <div class="meal" id="lunch-section">
-                    <h3>Lunch</h3>
-                    <ul class="food-items" data-meal="lunch"></ul>
+                <div class="meals">
+                    <div class="meal" id="breakfast-section">
+                        <h3>Breakfast</h3>
+                        <ul class="food-items" data-meal="breakfast"></ul>
+                    </div>
+                    <div class="meal" id="lunch-section">
+                        <h3>Lunch</h3>
+                        <ul class="food-items" data-meal="lunch"></ul>
+                    </div>
+                    <div class="meal" id="dinner-section">
+                        <h3>Dinner</h3>
+                        <ul class="food-items" data-meal="dinner"></ul>
+                    </div>
+                    <div class="meal" id="snack-section">
+                        <h3>Snack</h3>
+                        <ul class="food-items" data-meal="snack"></ul>
+                    </div>
                 </div>
-                <div class="meal" id="dinner-section">
-                    <h3>Dinner</h3>
-                    <ul class="food-items" data-meal="dinner"></ul>
+                <button id="add-food"><span class="plus-icon">&#43;</span> Add Food</button>
+            </section>
+            <section class="nutrients-vertical dashboard-card">
+                <h2>Other Nutrients</h2>
+                <div class="vertical-bars">
+                    <div class="vertical-bar fiber-bar" data-value="0" data-max="30">
+                        <div class="vertical-fill"></div>
+                        <span class="vertical-label fiber-label">0/30g Fiber</span>
+                    </div>
+                    <div class="vertical-bar sugar-bar" data-value="0" data-max="50">
+                        <div class="vertical-fill"></div>
+                        <span class="vertical-label sugar-label">0/50g Sugar</span>
+                    </div>
+                    <div class="vertical-bar cholesterol-bar" data-value="0" data-max="300">
+                        <div class="vertical-fill"></div>
+                        <span class="vertical-label cholesterol-label">0/300mg Cholesterol</span>
+                    </div>
                 </div>
-                <div class="meal" id="snack-section">
-                    <h3>Snack</h3>
-                    <ul class="food-items" data-meal="snack"></ul>
-                </div>
-            </div>
-            <button id="add-food"><span class="plus-icon">&#43;</span> Add Food</button>
-        </section>
+            </section>
+        </div>
 
         <!-- Water Intake -->
         <section class="water-intake">

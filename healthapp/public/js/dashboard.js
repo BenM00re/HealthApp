@@ -89,11 +89,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         // Calculate totals
         let totalCalories = 0, totalProtein = 0, totalCarbs = 0, totalFat = 0;
+        let totalFiber = 0, totalSugar = 0, totalCholesterol = 0;
         logs.forEach(entry => {
             totalCalories += parseFloat(entry.calories);
             totalProtein += parseFloat(entry.protein);
             totalCarbs += parseFloat(entry.carbs);
             totalFat += parseFloat(entry.fat);
+            if (entry.fiber) totalFiber += parseFloat(entry.fiber);
+            if (entry.sugar) totalSugar += parseFloat(entry.sugar);
+            if (entry.cholesterol) totalCholesterol += parseFloat(entry.cholesterol);
         });
 
         // Update summary values and progress indicators
@@ -138,6 +142,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             fatBar.setAttribute('data-value', totalFat.toFixed(0));
             fatBar.setAttribute('data-max', 65);
             fatLabel.textContent = `${totalFat.toFixed(0)}/65g`;
+        }
+
+        // Update fiber bar
+        const fiberBar = document.querySelector('.fiber-bar');
+        const fiberLabel = document.querySelector('.fiber-label');
+        if (fiberBar && fiberLabel) {
+            fiberBar.setAttribute('data-value', totalFiber.toFixed(0));
+            fiberBar.setAttribute('data-max', 30);
+            fiberLabel.textContent = `${totalFiber.toFixed(0)}/30g Fiber`;
+            const fill = fiberBar.querySelector('.vertical-fill');
+            const percent = Math.min((totalFiber / 30) * 100, 100);
+            if (fill) fill.style.height = percent + '%';
+        }
+        // Update sugar bar
+        const sugarBar = document.querySelector('.sugar-bar');
+        const sugarLabel = document.querySelector('.sugar-label');
+        if (sugarBar && sugarLabel) {
+            sugarBar.setAttribute('data-value', totalSugar.toFixed(0));
+            sugarBar.setAttribute('data-max', 50);
+            sugarLabel.textContent = `${totalSugar.toFixed(0)}/50g Sugar`;
+            const fill = sugarBar.querySelector('.vertical-fill');
+            const percent = Math.min((totalSugar / 50) * 100, 100);
+            if (fill) fill.style.height = percent + '%';
+        }
+        // Update cholesterol bar
+        const cholesterolBar = document.querySelector('.cholesterol-bar');
+        const cholesterolLabel = document.querySelector('.cholesterol-label');
+        if (cholesterolBar && cholesterolLabel) {
+            cholesterolBar.setAttribute('data-value', totalCholesterol.toFixed(0));
+            cholesterolBar.setAttribute('data-max', 300);
+            cholesterolLabel.textContent = `${totalCholesterol.toFixed(0)}/300mg Cholesterol`;
+            const fill = cholesterolBar.querySelector('.vertical-fill');
+            const percent = Math.min((totalCholesterol / 300) * 100, 100);
+            if (fill) fill.style.height = percent + '%';
         }
 
         updateProgress();

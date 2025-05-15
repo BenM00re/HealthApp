@@ -32,7 +32,7 @@ document.getElementById('groceryForm').addEventListener('submit', async (event) 
                 listItem.innerHTML = `
                     <img src="${product.image}" alt="${product.title}" style="width: 100px; height: auto; margin-right: 10px;">
                     <strong>${product.title}</strong><br>
-                    <button class="select-btn" data-title="${product.title}" data-calories="${product.calories}" data-protein="${product.protein}" data-carbs="${product.carbs}" data-fat="${product.fat}">Select</button>
+                    <button class="select-btn" data-title="${product.title}" data-calories="${product.calories}" data-protein="${product.protein}" data-carbs="${product.carbs}" data-fat="${product.fat}" data-fiber="${product.fiber}" data-sugar="${product.sugar}" data-cholesterol="${product.cholesterol}">Select</button>
                 `;
                 groceryList.appendChild(listItem);
             });
@@ -47,6 +47,9 @@ document.getElementById('groceryForm').addEventListener('submit', async (event) 
                     const protein = e.target.getAttribute('data-protein');
                     const carbs = e.target.getAttribute('data-carbs');
                     const fat = e.target.getAttribute('data-fat');
+                    const fiber = e.target.getAttribute('data-fiber');
+                    const sugar = e.target.getAttribute('data-sugar');
+                    const cholesterol = e.target.getAttribute('data-cholesterol');
 
                     // Populate the log food form
                     document.getElementById('selectedFood').value = title;
@@ -57,6 +60,9 @@ document.getElementById('groceryForm').addEventListener('submit', async (event) 
                     document.getElementById('logFoodForm').dataset.protein = protein;
                     document.getElementById('logFoodForm').dataset.carbs = carbs;
                     document.getElementById('logFoodForm').dataset.fat = fat;
+                    document.getElementById('logFoodForm').dataset.fiber = fiber;
+                    document.getElementById('logFoodForm').dataset.sugar = sugar;
+                    document.getElementById('logFoodForm').dataset.cholesterol = cholesterol;
                 });
             });
         } else {
@@ -123,6 +129,9 @@ document.getElementById('addToDiaryBtn').addEventListener('click', async () => {
         protein: document.getElementById('addToDiaryBtn').dataset.protein,
         carbs: document.getElementById('addToDiaryBtn').dataset.carbs,
         fat: document.getElementById('addToDiaryBtn').dataset.fat,
+        fiber: document.getElementById('logFoodForm').dataset.fiber || 0,
+        sugar: document.getElementById('logFoodForm').dataset.sugar || 0,
+        cholesterol: document.getElementById('logFoodForm').dataset.cholesterol || 0,
         meal: meal,
         timestamp: new Date().toISOString()
     };
