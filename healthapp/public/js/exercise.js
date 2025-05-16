@@ -8,6 +8,9 @@ let exercises = [];
 // Load saved plans immediately on page load
 document.addEventListener("DOMContentLoaded", () => {
   loadPlans();
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.location.href = '/index.html';
+    });
 });
 
 form.addEventListener("submit", (e) => {
