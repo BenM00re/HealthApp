@@ -132,9 +132,22 @@ loadButton.addEventListener("click", async () => {
 
 function renderExerciseList() {
   exerciseList.innerHTML = "";
-  exercises.forEach((ex) => {
-    const li = document.createElement("li");
-    li.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps`;
+
+  const template = document.getElementById("exercise-item-template");
+
+  exercises.forEach((ex, index) => {
+    const clone = template.content.cloneNode(true);
+    const li = clone.querySelector("li");
+    const textSpan = clone.querySelector(".exercise-text");
+    const removeBtn = clone.querySelector(".remove-btn");
+
+    textSpan.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps`;
+
+    removeBtn.addEventListener("click", () => {
+      exercises.splice(index, 1);
+      renderExerciseList();
+    });
+
     exerciseList.appendChild(li);
   });
 }
