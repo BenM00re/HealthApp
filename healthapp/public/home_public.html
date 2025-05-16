@@ -4,24 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="stylesheets/style.css">
+  <link rel="stylesheet" href="stylesheets/dashboard.css">
   <title>Home | Helf</title>
 </head>
 <body>
 
-<!-- Header + navbar-->
-<header>
-  <nav class="navbar">
-    <div class="logo">Helf</div>
-    <input type="checkbox" id="menu-toggle" class="menu-toggle" />
-    <label for="menu-toggle" class="hamburger">&#9776;</label>
-    <ul class="menu-links">
-      <li><a href="index.html">Login</a></li>
-      <li><a href="register.html">Sign Up</a></li> 
-    </ul>
-  </nav>
-</header>
 
+<body><!-- Header + navbar-->
+<header class="dashboard-header">
+    <div class="container">
+        <h1>Helf</h1>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+        <label for="menu-toggle" class="hamburger">&#9776;</label>
+        <nav>
+            <a href="home_public.html" class="active">Home</a>
+            <a href="index.html">Login</a>
+            <a href="register.html">Sign Up</a>
+        </nav>
+    </div>
+</header>
 
 <main>
 
@@ -30,7 +31,7 @@
     <div class="gym_pic-content">
       <h2>Track Your Journey to Optimal Health</h2>
       <p>Monitor fitness, diet, and wellness in one place</p>
-      <a class="cta-button" href="register.html">Join Us!</a>
+      <a class="sign-up-button" href="register.html">Join Us!</a>
     </div>
   </section>
   <!-- Outlines features of website -->
@@ -70,7 +71,9 @@
 
 
   </section>
- 
+  
+</main>
+
 <footer>
   <p>&copy; 2025 HealthApp </p>
  
