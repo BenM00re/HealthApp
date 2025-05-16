@@ -488,3 +488,67 @@ if (document.getElementById('weightChartDashboard')) {
         loadDashboardWeightHistory();
     }
 }
+
+function loadExercisePlansToDashboard() {
+    fetch("/api/exercises", {
+        credentials: "include"
+    })
+        .then(res => res.json())
+        .then(result => {
+            const container = document.getElementById("exercise-plans-list");
+            container.innerHTML = "";
+
+            if (!result.success || result.plans.length === 0) {
+                container.innerHTML = "<p>No exercise plans yet.</p>";
+                return;
+            }
+
+            result.plans.forEach((plan, index) => {
+                const planDiv = document.createElement("div");
+                planDiv.classList.add("exercise-plan");
+
+                const title = document.createElement("h3");
+                title.textContent = `Plan ${index + 1} - ${new Date(plan.createdAt).toLocaleDateString()}`;
+                planDiv.appendChild(title);
+
+                const ul = document.createElement("ul");
+                plan.exercises.forEach(ex => {
+                    const li = document.createElement("li");
+                    li.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps`;
+                    ul.appendChild(li);
+                });
+                planDiv.appendChild(ul);
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "delete-plan-btn";
+                deleteBtn.textContent = "Delete";
+                deleteBtn.addEventListener("click", async () => {
+                    if (confirm("Are you sure you want to delete this plan?")) {
+                        try {
+                            const res = await fetch(`/api/exercises/${plan._id}`, {
+                                method: "DELETE",
+                                credentials: "include"
+                            });
+                            const data = await res.json();
+                            if (data.success) {
+                                loadExercisePlansToDashboard();
+                            } else {
+                                alert("Failed to delete the plan.");
+                            }
+                        } catch (err) {
+                            console.error("Delete error:", err);
+                        }
+                    }
+                });
+
+                planDiv.appendChild(deleteBtn);
+                container.appendChild(planDiv);
+            });
+        })
+        .catch(err => {
+            console.error("Failed to load exercise plans:", err);
+        });
+}
+
+// Call on load
+document.addEventListener("DOMContentLoaded", loadExercisePlansToDashboard);
