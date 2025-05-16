@@ -15,6 +15,7 @@ const passport = require('passport');
 const foodlogRoutes = require('./routes/foodlog');
 const profileRoutes = require('./routes/profile');
 const User = require('./models/users');
+
 // ===== MIDDLEWARE ORDER MATTERS =====
 
 // Session and passport middleware
@@ -25,6 +26,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Static files and home route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home_public.html'));
@@ -35,8 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/api/exercises", require("./routes/exercise"));
-
-
 
 // Logging in dev mode
 if (process.env.NODE_ENV === 'development') {
@@ -54,6 +54,7 @@ app.use(cors({
     origin: 'http://localhost:3000', // or your frontend URL
     credentials: true
 }));
+
 // ===== ROUTES =====
 app.use('/api/spoonacular', food);
 app.use('/food', foodlogRoutes);

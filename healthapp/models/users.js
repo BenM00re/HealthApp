@@ -39,7 +39,8 @@ const ProfileSchema = new mongoose.Schema({
     proteinGrams: Number,
     carbsGrams: Number,
     fatGrams: Number,
-    lastUpdated: { type: Date, default: Date.now }
+    lastUpdated: { type: Date, default: Date.now },
+    weightHistory: [{ date: String, weight: Number }]
 });
 
 const UserSchema = new mongoose.Schema({

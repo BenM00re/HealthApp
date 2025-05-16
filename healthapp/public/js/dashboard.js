@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         updateProgress();
+        updateNutrientBars(totalFiber, totalSugar, totalCholesterol);
     }
 
     // Function to get the appropriate calorie goal based on user's preference
@@ -389,3 +390,101 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     updateWaterUI();
 });
+
+function updateNutrientBars(fiber, sugar, cholesterol) {
+  const fiberBar = document.querySelector('.fiber-bar .vertical-fill');
+  const fiberLabel = document.querySelector('.fiber-bar .vertical-label span');
+  const sugarBar = document.querySelector('.sugar-bar .vertical-fill');
+  const sugarLabel = document.querySelector('.sugar-bar .vertical-label span');
+  const cholesterolBar = document.querySelector('.cholesterol-bar .vertical-fill');
+  const cholesterolLabel = document.querySelector('.cholesterol-bar .vertical-label span');
+
+  // Set max values (should match HTML data-max attributes)
+  const fiberMax = 30;
+  const sugarMax = 50;
+  const cholesterolMax = 300;
+
+  // Calculate fill heights as percent
+  fiberBar.style.height = Math.min((fiber / fiberMax) * 100, 100) + '%';
+  sugarBar.style.height = Math.min((sugar / sugarMax) * 100, 100) + '%';
+  cholesterolBar.style.height = Math.min((cholesterol / cholesterolMax) * 100, 100) + '%';
+
+  // Update label values
+  if (fiberLabel) fiberLabel.textContent = `(${fiber}/${fiberMax}g)`;
+  if (sugarLabel) sugarLabel.textContent = `(${sugar}/${sugarMax}g)`;
+  if (cholesterolLabel) cholesterolLabel.textContent = `(${cholesterol}/${cholesterolMax}mg)`;
+}
+
+// --- Dashboard Weight History Chart ---
+function renderDashboardWeightChart(weightHistory) {
+    const ctx = document.getElementById('weightChartDashboard');
+    const dateDiv = document.getElementById('weight-history-dates');
+    if (!ctx) return;
+    if (window.dashboardWeightChart) window.dashboardWeightChart.destroy();
+    if (!weightHistory || weightHistory.length === 0) {
+        if (dateDiv) dateDiv.textContent = 'No weight history.';
+        return;
+    }
+    const labels = weightHistory.map(entry => new Date(entry.date).toLocaleDateString());
+    const data = weightHistory.map(entry => entry.weight);
+    window.dashboardWeightChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Weight (kg)',
+                data: data,
+                borderColor: '#468fe2',
+                backgroundColor: 'rgba(70,143,226,0.08)',
+                tension: 0.3,
+                pointRadius: 3,
+                pointBackgroundColor: '#00C48C',
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { title: { display: true, text: 'Date' }, ticks: { autoSkip: true, maxTicksLimit: 5 } },
+                y: { title: { display: true, text: 'Weight (kg)' }, beginAtZero: false }
+            }
+        }
+    });
+    // Show the most recent date and weight
+    if (dateDiv && weightHistory.length > 0) {
+        const last = weightHistory[weightHistory.length-1];
+        dateDiv.textContent = `Last update: ${new Date(last.date).toLocaleDateString()} (${last.weight} kg)`;
+    }
+}
+
+// Load weight history from profile and render chart
+async function loadDashboardWeightHistory() {
+    try {
+        const res = await fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        });
+        const data = await res.json();
+        if (data.success && data.profile && Array.isArray(data.profile.weightHistory)) {
+            renderDashboardWeightChart(data.profile.weightHistory);
+        } else {
+            renderDashboardWeightChart([]);
+        }
+    } catch (e) {
+        renderDashboardWeightChart([]);
+    }
+}
+
+// On DOMContentLoaded, load the dashboard weight chart
+if (document.getElementById('weightChartDashboard')) {
+    if (typeof Chart === 'undefined') {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = function() { loadDashboardWeightHistory(); };
+        document.head.appendChild(script);
+    } else {
+        loadDashboardWeightHistory();
+    }
+}

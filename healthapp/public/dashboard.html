@@ -30,7 +30,7 @@
                 <p>Dashboard containing all tools</p>
             </div>
         </section>
-        <section class="daily-summary">
+        <section class="daily-summary dashboard-card">
             <h2>Today's Summary</h2>
             <div class="summary-grid">
                 <div class="summary-card">
@@ -69,9 +69,9 @@
             </div>
         </section>
 
-        <!-- Food Log and Nutrients -->
+        <!-- Food Log and Nutrients/Weight History: Two Columns -->
         <div class="dashboard-flex-row">
-            <section class="food-log dashboard-card stretch-food-log">
+            <section class="food-log dashboard-card stretch-food-log" style="flex:2 1 0;min-width:320px;">
                 <h2>Today's Food</h2>
                 <label for="logDate">View logs for date:</label>
                 <input type="date" id="logDate" style="margin-bottom:1rem;">
@@ -95,28 +95,41 @@
                 </div>
                 <button id="add-food"><span class="plus-icon">&#43;</span> Add Food</button>
             </section>
-            <section class="nutrients-vertical dashboard-card">
-                <h2>Other Nutrients</h2>
-                <div class="vertical-bars">
-                    <div class="vertical-bar fiber-bar" data-value="0" data-max="30">
-                        <div class="vertical-fill"></div>
-                        <span class="vertical-label fiber-label">0/30g Fiber</span>
+            <div style="display:flex;flex-direction:column;flex:1 1 340px;min-width:320px;max-width:370px;gap:1.2rem;">
+                <section class="nutrients-vertical dashboard-card stretch-nutrients">
+                    <h2>Other Nutrients</h2>
+                    <div class="vertical-bars">
+                        <div class="nutrient-bar-group">
+                            <div class="vertical-bar fiber-bar" data-value="0" data-max="30">
+                                <div class="vertical-fill"></div>
+                            </div>
+                            <span class="vertical-label fiber-label">Fiber <span style='color:#00C48C;font-weight:400;'>(0/30g)</span></span>
+                        </div>
+                        <div class="nutrient-bar-group">
+                            <div class="vertical-bar sugar-bar" data-value="0" data-max="50">
+                                <div class="vertical-fill"></div>
+                            </div>
+                            <span class="vertical-label sugar-label">Sugar <span style='color:#ff5a36;font-weight:400;'>(0/50g)</span></span>
+                        </div>
+                        <div class="nutrient-bar-group">
+                            <div class="vertical-bar cholesterol-bar" data-value="0" data-max="300">
+                                <div class="vertical-fill"></div>
+                            </div>
+                            <span class="vertical-label cholesterol-label">Cholesterol <span style='color:#b388ff;font-weight:400;'>(0/300mg)</span></span>
+                        </div>
                     </div>
-                    <div class="vertical-bar sugar-bar" data-value="0" data-max="50">
-                        <div class="vertical-fill"></div>
-                        <span class="vertical-label sugar-label">0/50g Sugar</span>
-                    </div>
-                    <div class="vertical-bar cholesterol-bar" data-value="0" data-max="300">
-                        <div class="vertical-fill"></div>
-                        <span class="vertical-label cholesterol-label">0/300mg Cholesterol</span>
-                    </div>
-                </div>
-            </section>
+                </section>
+                <section class="weight-history dashboard-card" style="margin:0;padding:1rem 1rem 0.5rem 1rem;display:flex;flex-direction:column;align-items:center;">
+                    <h3 style="font-size:1.1rem;margin-bottom:0.5rem;">Weight History</h3>
+                    <canvas id="weightChartDashboard" height="100"></canvas>
+                    <div id="weight-history-dates" style="font-size:0.95rem;color:#666;margin-top:0.5rem;text-align:center;"></div>
+                </section>
+            </div>
         </div>
 
         <!-- Water Intake -->
-        <section class="water-intake">
-            <h2>Water</h2>
+        <section class="dashboard-card water-intake-card">
+            <h2>Water Intake</h2>
             <div class="water-controls">
                 <button id="water-minus" aria-label="Remove Water">&#8722;</button>
                 <div class="water-bottles">

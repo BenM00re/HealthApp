@@ -8,44 +8,53 @@
 </head>
 <body>
 
-<!-- Header + navbar-->
 <header class="dashboard-header">
-        <div class="container">
-            <h1>Helf</h1>
-            <nav>
-                <a href="home.html">Home</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="food.html">Food</a>
-                <a href="exercise.html" class="active">Exercise</a>
-                <a href="profile.html">Profile</a>
-                <button id="logoutBtn">Logout</button>
-            </nav>
-        </div>
-    </header>
-
-<main>
   <div class="container">
-    <h1>Create Workout Plan</h1>
+    <h1>Helf</h1>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="food.html">Food</a>
+      <a href="exercise.html" class="active">Exercise</a>
+      <a href="profile.html">Profile</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </div>
+</header>
 
+<main class="container">
+  <section class="dashboard-card">
+    <h1>Create Workout Plan</h1>
     <form id="exercise-form">
       <input type="text" id="exercise-name" placeholder="Exercise Name" required />
       <input type="number" id="sets" placeholder="Sets" min="1" required />
       <input type="number" id="reps" placeholder="Reps" min="1" required />
-      <button type="submit">Add Exercise</button>
+      <button type="submit" class="btn">Add Exercise</button>
     </form>
+  </section>
 
+  <section class="dashboard-card">
     <h2>Workout Plan</h2>
     <ul id="exercise-list"></ul>
-    <button id="save-plan">Save Plan</button>
-    <button id="load-plan">Load Plans</button>
-  </div>
-  <div id="saved-plans-section">
-  <h2>Saved Plans</h2>
-  <div id="saved-plans"></div>
-</div>
+    <button id="save-plan" class="btn">Save Plan</button>
+    <button id="load-plan" class="btn btn-outline">Load Plans</button>
+  </section>
+
+  <section class="dashboard-card">
+    <h2>Saved Plans</h2>
+    <div id="saved-plans-section">
+      <div id="saved-plans"></div>
+    </div>
+  </section>
 </main>
 
 <script src="js/exercise.js"></script>
+<script>
+  // Logout button functionality
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+    window.location.href = '/logout';
+  });
+</script>
 
 </body>
 </html>

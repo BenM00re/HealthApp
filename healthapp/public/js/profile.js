@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async () => {
     // Check authentication on page load
     try {
@@ -107,7 +106,92 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     
     // Save profile
-    saveButton.addEventListener('click', saveProfile);
+    saveButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const profileData = {
+            gender: genderInput.value,
+            age: parseInt(ageInput.value) || 0,
+            height: parseInt(heightInput.value) || 0,
+            weight: parseInt(weightInput.value) || 0,
+            activityLevel: parseFloat(activityInput.value) || 1.2,
+            calorieGoal: calorieGoalSelect.value,
+            proteinPercent: parseInt(proteinPercentInput.value) || 30,
+            carbsPercent: parseInt(carbsPercentInput.value) || 40,
+            fatPercent: parseInt(fatPercentInput.value) || 30,
+            fiberGoal: parseInt(fiberGoalInput.value) || 30,
+            sugarGoal: parseInt(sugarGoalInput.value) || 50,
+            cholesterolGoal: parseInt(cholesterolGoalInput.value) || 300,
+            loseCalories: parseInt(loseCaloriesEl.textContent) || 0,
+            maintainCalories: parseInt(maintainCaloriesEl.textContent) || 0,
+            gainCalories: parseInt(gainCaloriesEl.textContent) || 0,
+            proteinGrams: parseInt(proteinGramsEl.textContent) || 0,
+            carbsGrams: parseInt(carbsGramsEl.textContent) || 0,
+            fatGrams: parseInt(fatGramsEl.textContent) || 0,
+            lastUpdated: new Date().toISOString()
+        };
+        
+        // Weight history logic
+        let weightHistory = Array.isArray(profileData.weightHistory) ? profileData.weightHistory : [];
+        const newWeight = parseFloat(weightInput.value);
+        const today = new Date().toISOString().slice(0, 10);
+        if (!isNaN(newWeight)) {
+            // Only add if different from last entry or if no entry for today
+            if (!weightHistory.length || weightHistory[weightHistory.length-1].weight !== newWeight || weightHistory[weightHistory.length-1].date !== today) {
+                weightHistory.push({ date: today, weight: newWeight });
+            }
+        }
+        
+        const profileToSave = {
+            gender: genderInput.value,
+            age: parseInt(ageInput.value) || 0,
+            height: parseInt(heightInput.value) || 0,
+            weight: parseInt(weightInput.value) || 0,
+            activityLevel: parseFloat(activityInput.value) || 1.2,
+            calorieGoal: calorieGoalSelect.value,
+            proteinPercent: parseInt(proteinPercentInput.value) || 30,
+            carbsPercent: parseInt(carbsPercentInput.value) || 40,
+            fatPercent: parseInt(fatPercentInput.value) || 30,
+            fiberGoal: parseInt(fiberGoalInput.value) || 30,
+            sugarGoal: parseInt(sugarGoalInput.value) || 50,
+            cholesterolGoal: parseInt(cholesterolGoalInput.value) || 300,
+            loseCalories: parseInt(loseCaloriesEl.textContent) || 0,
+            maintainCalories: parseInt(maintainCaloriesEl.textContent) || 0,
+            gainCalories: parseInt(gainCaloriesEl.textContent) || 0,
+            proteinGrams: parseInt(proteinGramsEl.textContent) || 0,
+            carbsGrams: parseInt(carbsGramsEl.textContent) || 0,
+            fatGrams: parseInt(fatGramsEl.textContent) || 0,
+            lastUpdated: new Date().toISOString(),
+            weightHistory
+        };
+        
+        try {
+            const token = localStorage.getItem('authToken');
+            const res = await fetch('/profile/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+                },
+                credentials: 'include',
+                body: JSON.stringify(profileToSave)
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+                // Also save to localStorage as a backup
+                localStorage.setItem('healthAppProfile', JSON.stringify(profileToSave));
+                alert('Profile saved successfully!');
+            } else {
+                throw new Error(data.message || 'Failed to save profile');
+            }
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            // As a fallback, save to localStorage
+            localStorage.setItem('healthAppProfile', JSON.stringify(profileToSave));
+            alert('Unable to save to server, profile saved locally only.');
+        }
+    });
     
     // Calculate BMR and TDEE
     function calculateCalories() {
@@ -316,6 +400,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             lastUpdated: new Date().toISOString()
         };
         
+        // Weight history logic
+        let weightHistory = Array.isArray(profileData.weightHistory) ? profileData.weightHistory : [];
+        const newWeight = parseFloat(weightInput.value);
+        const today = new Date().toISOString().slice(0, 10);
+        if (!isNaN(newWeight)) {
+            // Only add if different from last entry or if no entry for today
+            if (!weightHistory.length || weightHistory[weightHistory.length-1].weight !== newWeight || weightHistory[weightHistory.length-1].date !== today) {
+                weightHistory.push({ date: today, weight: newWeight });
+            }
+        }
+        
+        const profileToSave = {
+            gender: genderInput.value,
+            age: parseInt(ageInput.value) || 0,
+            height: parseInt(heightInput.value) || 0,
+            weight: parseInt(weightInput.value) || 0,
+            activityLevel: parseFloat(activityInput.value) || 1.2,
+            calorieGoal: calorieGoalSelect.value,
+            proteinPercent: parseInt(proteinPercentInput.value) || 30,
+            carbsPercent: parseInt(carbsPercentInput.value) || 40,
+            fatPercent: parseInt(fatPercentInput.value) || 30,
+            fiberGoal: parseInt(fiberGoalInput.value) || 30,
+            sugarGoal: parseInt(sugarGoalInput.value) || 50,
+            cholesterolGoal: parseInt(cholesterolGoalInput.value) || 300,
+            loseCalories: parseInt(loseCaloriesEl.textContent) || 0,
+            maintainCalories: parseInt(maintainCaloriesEl.textContent) || 0,
+            gainCalories: parseInt(gainCaloriesEl.textContent) || 0,
+            proteinGrams: parseInt(proteinGramsEl.textContent) || 0,
+            carbsGrams: parseInt(carbsGramsEl.textContent) || 0,
+            fatGrams: parseInt(fatGramsEl.textContent) || 0,
+            lastUpdated: new Date().toISOString(),
+            weightHistory
+        };
+        
         try {
             const token = localStorage.getItem('authToken');
             const res = await fetch('/profile/update', {
@@ -325,14 +443,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     ...(token ? { 'Authorization': 'Bearer ' + token } : {})
                 },
                 credentials: 'include',
-                body: JSON.stringify(profileData)
+                body: JSON.stringify(profileToSave)
             });
             
             const data = await res.json();
             
             if (data.success) {
                 // Also save to localStorage as a backup
-                localStorage.setItem('healthAppProfile', JSON.stringify(profileData));
+                localStorage.setItem('healthAppProfile', JSON.stringify(profileToSave));
                 alert('Profile saved successfully!');
             } else {
                 throw new Error(data.message || 'Failed to save profile');
@@ -340,7 +458,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (error) {
             console.error('Error saving profile:', error);
             // As a fallback, save to localStorage
-            localStorage.setItem('healthAppProfile', JSON.stringify(profileData));
+            localStorage.setItem('healthAppProfile', JSON.stringify(profileToSave));
             alert('Unable to save to server, profile saved locally only.');
         }
     }

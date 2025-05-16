@@ -5,7 +5,14 @@ const loadButton = document.getElementById("load-plan");
 const savedPlansDiv = document.getElementById("saved-plans");
 
 let exercises = [];
-
+document.addEventListener('DOMContentLoaded', function() {
+        var logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', function() {
+            window.location.href = '/index.html';
+          });
+        }
+      });
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -87,6 +94,7 @@ loadButton.addEventListener("click", async () => {
       // ✅ Add delete button
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete Plan";
+      deleteButton.className = "delete-plan-btn";
       deleteButton.addEventListener("click", async () => {
         if (confirm("Are you sure you want to delete this plan?")) {
           try {

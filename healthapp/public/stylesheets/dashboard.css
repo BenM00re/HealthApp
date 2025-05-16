@@ -53,6 +53,25 @@ body {
     background-color: rgb(255, 89, 0, 0.3);
 }
 
+.dashboard-header nav button#logoutBtn {
+    background: linear-gradient(90deg, #ff5a36 0%, #ffb347 100%);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(255,90,54,0.08);
+}
+.dashboard-header nav button#logoutBtn:hover {
+    background: linear-gradient(90deg, #ffb347 0%, #ff5a36 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(255,90,54,0.15);
+}
+
 /* ===== Dashboard Cards ===== */
 .dashboard-card {
     background: white;
@@ -358,48 +377,61 @@ body {
 .dashboard-flex-row {
     display: flex;
     gap: 2rem;
-    align-items: flex-start;
+    align-items: stretch;
     margin-top: 2rem;
 }
 .stretch-food-log {
     flex: 2 1 0%;
     min-width: 0;
 }
+.stretch-nutrients {
+    flex: 1 1 220px;
+    min-width: 160px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-self: stretch;
+}
 
 /* ===== Nutrients Vertical Card ===== */
 .nutrients-vertical.dashboard-card {
-    flex: 1 1 180px;
-    min-width: 160px;
-    max-width: 220px;
-    background: linear-gradient(135deg, #f8fafc 80%, #e3f6f3 100%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: linear-gradient(135deg, #e3f6f3 60%, #f8fafc 100%);
     border: 1.5px solid #e0e7ef;
     box-shadow: 0 2px 12px rgba(70,143,226,0.07);
     border-radius: 16px;
-    padding: 1.5rem 1rem 1.5rem 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
 }
 
 .nutrients-vertical h2 {
-    color: #468fe2;
-    font-size: 1.1rem;
-    margin-bottom: 1.2rem;
+    color: #00C48C;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
     text-align: center;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,196,140,0.08);
 }
 
 /* ===== Vertical Bars ===== */
 .vertical-bars {
     display: flex;
     flex-direction: row;
-    gap: 1.5rem;
+    gap: 2.2rem;
     align-items: flex-end;
     justify-content: center;
+    width: 100%;
+    height: 180px;
 }
 
 .vertical-bar {
-    width: 36px;
-    height: 160px;
+    width: 12px;
+    height: 140px;
     background: #e0e7ef;
     border-radius: 12px;
     position: relative;
@@ -408,6 +440,8 @@ body {
     align-items: center;
     justify-content: flex-end;
     box-shadow: 0 1px 4px rgba(70,143,226,0.04);
+    padding: 0;
+    margin-bottom: 0;
 }
 
 .vertical-fill {
@@ -439,9 +473,19 @@ body {
     z-index: 2;
     font-size: 0.95rem;
     color: #333;
-    margin-top: 8px;
+    margin-top: 10px;
+    margin-bottom: 0;
     text-align: center;
     display: block;
+    font-weight: 600;
+}
+
+/* Add a wrapper for each bar+label for better alignment */
+.nutrient-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
 }
 
 /* ===== Responsive for Dashboard Flex Row and Nutrients Vertical Card ===== */
@@ -449,11 +493,37 @@ body {
     .dashboard-flex-row {
         flex-direction: column;
         gap: 1.5rem;
+        align-items: stretch;
     }
-    .stretch-food-log, .nutrients-vertical.dashboard-card {
+    .stretch-food-log, .stretch-nutrients {
         max-width: 100%;
         min-width: 0;
         width: 100%;
         margin: 0 auto;
+        height: auto;
     }
+    .nutrients-vertical.dashboard-card {
+        height: auto;
+    }
+}
+
+/* ===== Delete Plan Button ===== */
+.delete-plan-btn {
+    background: linear-gradient(90deg, #ff5a36 0%, #ffb347 100%);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(255,90,54,0.08);
+    display: inline-block;
+}
+.delete-plan-btn:hover {
+    background: linear-gradient(90deg, #ffb347 0%, #ff5a36 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(255,90,54,0.15);
 }

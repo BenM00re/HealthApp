@@ -61,6 +61,7 @@ router.get('/log/:date', ensureAnyAuth, async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch logs' });
     }
 });
+
 // Delete a food entry by date and entry ID
 router.delete('/log/:date/:entryId', async (req, res) => {
     try {
@@ -84,4 +85,5 @@ router.delete('/log/:date/:entryId', async (req, res) => {
         res.status(500).json({ success: false, error: 'Failed to delete entry' });
     }
 });
+
 module.exports = router;
