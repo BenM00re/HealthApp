@@ -64,15 +64,15 @@ app.use('/auth', require('./routes/auth'));
 // Registration (MongoDB)
 app.post('/auth/register', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        if (!username || !email || !password) {
+        const { firstName, lastName, username, email, password } = req.body;
+        if (!firstName || !lastName || !username || !email || !password) {
             return res.status(400).json({ success: false, error: 'Missing required fields' });
         }
         const existing = await User.findOne({ $or: [{ username }, { email }] });
         if (existing) {
             return res.status(400).json({ success: false, error: 'Username or email already exists' });
         }
-        const user = new User({ username, email, password });
+        const user = new User({ firstName, lastName, username, email, password });
         await user.save();
         res.json({ success: true, redirect: '/index.html?registration=success' });
     } catch (err) {

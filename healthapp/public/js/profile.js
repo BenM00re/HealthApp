@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fatGrams: parseInt(fatGramsEl.textContent) || 0,
             lastUpdated: new Date().toISOString()
         };
-        
+
         // Weight history logic
         let weightHistory = Array.isArray(profileData.weightHistory) ? profileData.weightHistory : [];
         const newWeight = parseFloat(weightInput.value);
@@ -140,7 +140,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 weightHistory.push({ date: today, weight: newWeight });
             }
         }
-        
+
+        // Get weight goal value
+        const weightGoalInput = document.getElementById('weight-goal');
+        const weightGoal = weightGoalInput ? parseFloat(weightGoalInput.value) || null : null;
+
         const profileToSave = {
             gender: genderInput.value,
             age: parseInt(ageInput.value) || 0,
@@ -161,7 +165,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             carbsGrams: parseInt(carbsGramsEl.textContent) || 0,
             fatGrams: parseInt(fatGramsEl.textContent) || 0,
             lastUpdated: new Date().toISOString(),
-            weightHistory
+            weightHistory,
+            weightGoal
         };
         
         try {
@@ -317,23 +322,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (profileData.weight) weightInput.value = profileData.weight;
                 if (profileData.activityLevel) activityInput.value = profileData.activityLevel;
                 if (profileData.calorieGoal) calorieGoalSelect.value = profileData.calorieGoal;
-                
+
                 // Set macro percentages
                 if (profileData.proteinPercent) proteinPercentInput.value = profileData.proteinPercent;
                 if (profileData.carbsPercent) carbsPercentInput.value = profileData.carbsPercent;
                 if (profileData.fatPercent) fatPercentInput.value = profileData.fatPercent;
-                
+
                 // Set additional goals
                 if (profileData.fiberGoal) fiberGoalInput.value = profileData.fiberGoal;
                 if (profileData.sugarGoal) sugarGoalInput.value = profileData.sugarGoal;
                 if (profileData.cholesterolGoal) cholesterolGoalInput.value = profileData.cholesterolGoal;
-                
+
+                // Set weight goal if present
+                const weightGoalInput = document.getElementById('weight-goal');
+                if (weightGoalInput && typeof profileData.weightGoal !== "undefined" && profileData.weightGoal !== null) {
+                    weightGoalInput.value = profileData.weightGoal;
+                }
+
                 // Calculate calories
                 calculateCalories();
-                
+
                 // Update macro percentages display
                 updateMacroPercentages();
-                
+
                 // Set active goal card
                 if (profileData.calorieGoal) {
                     const activeCardIndex = profileData.calorieGoal === 'lose' ? 0 : 
@@ -431,7 +442,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             carbsGrams: parseInt(carbsGramsEl.textContent) || 0,
             fatGrams: parseInt(fatGramsEl.textContent) || 0,
             lastUpdated: new Date().toISOString(),
-            weightHistory
+            weightHistory,
+            weightGoal
         };
         
         try {

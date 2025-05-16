@@ -24,6 +24,16 @@
 
 <main class="container">
   <section class="dashboard-card">
+    <h2>Calories Burned</h2>
+    <form id="calories-burned-form" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+      <input type="number" id="calories-burned-input" min="0" placeholder="Calories burned today" style="width:180px;">
+      <button type="submit" class="btn">Save</button>
+      <span id="calories-burned-status" style="font-size:0.95rem;color:#666;"></span>
+    </form>
+    <div style="font-size:0.95rem;color:#888;margin-bottom:0.5rem;">This resets daily at midnight.</div>
+  </section>
+
+  <section class="dashboard-card">
     <h1>Create Workout Plan</h1>
     <form id="exercise-form">
       <input type="text" id="exercise-name" placeholder="Exercise Name" required />

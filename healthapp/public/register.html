@@ -18,10 +18,18 @@
             
             <form id="register-form" action="/auth/register" method="POST">
                 <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" placeholder="Enter your first name" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" placeholder="Enter your last name" name="lastName" required>
+                </div>
+                <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" id="username" placeholder="Enter your username" name="username" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" placeholder="Enter your email" name="email" required>

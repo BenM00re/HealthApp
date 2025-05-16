@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         username: username,
-                        password: password
+                        password: plainPassword
                     }),
                     credentials: 'include'
                 });
@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        firstName: registerForm.firstName.value,
+                        lastName: registerForm.lastName.value,
                         username: registerForm.username.value,
                         email: registerForm.email.value,
                         password: registerForm.password.value

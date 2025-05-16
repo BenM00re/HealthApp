@@ -39,18 +39,19 @@ const ProfileSchema = new mongoose.Schema({
     proteinGrams: Number,
     carbsGrams: Number,
     fatGrams: Number,
+    weightGoal: { type: Number },
     lastUpdated: { type: Date, default: Date.now },
     weightHistory: [{ date: String, weight: Number }]
 });
 
 const UserSchema = new mongoose.Schema({
+    firstName: { type: String, required: false },
+    lastName: { type: String, required: false },
     username: { type: String, unique: true, sparse: true },
     email: { type: String, unique: true, sparse: true },
     password: { type: String },
     googleId: { type: String, unique: true, sparse: true, required: false }, // <-- not required
     displayName: { type: String, required: false },
-    firstName: { type: String, required: false },
-    lastName: { type: String, required: false },
     image: { type: String },
     createdAt: { type: Date, default: Date.now },
     foodLogs: [FoodLogSchema],

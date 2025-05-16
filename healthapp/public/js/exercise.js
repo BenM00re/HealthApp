@@ -8,6 +8,17 @@ let exercises = [];
 // Load saved plans immediately on page load
 document.addEventListener("DOMContentLoaded", () => {
   loadPlans();
+  // Save user id to localStorage for cross-tab communication
+  fetch('/auth/verify', { credentials: 'include' })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success && data.user && data.user._id) {
+        localStorage.setItem('healthAppUser', JSON.stringify({ _id: data.user._id }));
+      }
+    });
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+        window.location.href = '/index.html';
+    });
 });
 
 form.addEventListener("submit", (e) => {
@@ -180,3 +191,57 @@ function renderExerciseList() {
     exerciseList.appendChild(li);
   });
 }
+
+// --- Daily Calories Burned Logic ---
+const caloriesBurnedForm = document.getElementById('calories-burned-form');
+const caloriesBurnedInput = document.getElementById('calories-burned-input');
+const caloriesBurnedStatus = document.getElementById('calories-burned-status');
+
+function getTodayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function loadCaloriesBurned() {
+  const data = JSON.parse(localStorage.getItem('caloriesBurnedToday') || '{}');
+  if (data.date === getTodayStr()) {
+    caloriesBurnedInput.value = data.value || '';
+    return data.value || 0;
+  } else {
+    caloriesBurnedInput.value = '';
+    localStorage.removeItem('caloriesBurnedToday');
+    return 0;
+  }
+}
+
+function saveCaloriesBurned(val) {
+  // Use per-user key if possible
+  let userId = null;
+  try {
+    const user = JSON.parse(localStorage.getItem('healthAppUser'));
+    if (user && user._id) userId = user._id;
+  } catch (e) {}
+  const key = userId ? `caloriesBurnedToday_${userId}` : 'caloriesBurnedToday';
+  localStorage.setItem(key, JSON.stringify({ date: getTodayStr(), value: val }));
+  // Notify dashboard immediately
+  window.dispatchEvent(new StorageEvent('storage', { key, newValue: JSON.stringify({ date: getTodayStr(), value: val }) }));
+}
+
+if (caloriesBurnedForm) {
+  loadCaloriesBurned();
+  caloriesBurnedForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = parseInt(caloriesBurnedInput.value) || 0;
+    saveCaloriesBurned(val);
+    caloriesBurnedStatus.textContent = 'Saved!';
+    setTimeout(() => { caloriesBurnedStatus.textContent = ''; }, 1500);
+  });
+}
+
+// Reset at midnight
+setInterval(() => {
+  const data = JSON.parse(localStorage.getItem('caloriesBurnedToday') || '{}');
+  if (data.date && data.date !== getTodayStr()) {
+    localStorage.removeItem('caloriesBurnedToday');
+    if (caloriesBurnedInput) caloriesBurnedInput.value = '';
+  }
+}, 60 * 1000); // check every minute
