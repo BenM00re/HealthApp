@@ -11,8 +11,6 @@
 <header class="dashboard-header">
   <div class="container">
     <h1>Helf</h1>
-    <input type="checkbox" id="menu-toggle" class="menu-toggle"/>
-    <label for="menu-toggle" class="hamburger">&#9776;</label>
     <nav>
       <a href="home.html">Home</a>
       <a href="dashboard.html">Dashboard</a>
@@ -31,20 +29,26 @@
       <input type="text" id="exercise-name" placeholder="Exercise Name" required />
       <input type="number" id="sets" placeholder="Sets" min="1" required />
       <input type="number" id="reps" placeholder="Reps" min="1" required />
+      <input type="number" step="any" id="weight" placeholder="Weight (optional)" min="0" />
+      <select id="unit">
+        <option value="kg">kg</option>
+        <option value="lbs">lbs</option>
+      </select>
       <button type="submit" class="btn">Add Exercise</button>
     </form>
   </section>
+
   <template id="exercise-item-template">
-  <li>
-    <span class="exercise-text"></span>
-    <button class="remove-btn">Remove</button>
-  </li>
+    <li>
+      <span class="exercise-text"></span>
+      <button class="remove-btn">Remove</button>
+    </li>
   </template>
+
   <section class="dashboard-card">
     <h2>Workout Plan</h2>
     <ul id="exercise-list"></ul>
     <button id="save-plan" class="btn">Save Plan</button>
-    
   </section>
 
   <section class="dashboard-card">
@@ -57,7 +61,6 @@
 
 <script src="js/exercise.js"></script>
 <script>
-  // Logout button functionality
   document.getElementById('logoutBtn').addEventListener('click', function() {
     window.location.href = '/logout';
   });
