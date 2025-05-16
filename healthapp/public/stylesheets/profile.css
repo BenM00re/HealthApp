@@ -189,7 +189,4 @@
   .calorie-goals {
     flex-direction: column;
   }
-  .goal-card {
-    width: 100%;
-  }
 }
