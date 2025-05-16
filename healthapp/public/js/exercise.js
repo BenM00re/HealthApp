@@ -32,6 +32,12 @@ form.addEventListener("submit", (e) => {
 });
 
 saveButton.addEventListener("click", async () => {
+
+    if (exercises.length === 0) {
+    alert("You must add at least one exercise before saving a plan.");
+    return;
+  }
+
   try {
     const response = await fetch("/api/exercises", {
       method: "POST",
@@ -91,7 +97,7 @@ loadButton.addEventListener("click", async () => {
 
       planDiv.appendChild(ul);
 
-      // ✅ Add delete button
+      // Add delete button
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete Plan";
       deleteButton.className = "delete-plan-btn";
@@ -134,9 +140,27 @@ loadButton.addEventListener("click", async () => {
 
 function renderExerciseList() {
   exerciseList.innerHTML = "";
-  exercises.forEach((ex) => {
-    const li = document.createElement("li");
-    li.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps`;
+
+  const template = document.getElementById("exercise-item-template");
+
+  exercises.forEach((ex, index) => {
+    const clone = template.content.cloneNode(true);
+    const li = clone.querySelector("li");
+    const textSpan = clone.querySelector(".exercise-text");
+    const removeBtn = clone.querySelector(".remove-btn");
+
+    textSpan.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps`;
+
+    removeBtn.addEventListener("click", () => {
+      exercises.splice(index, 1);
+      renderExerciseList();
+    });
+
     exerciseList.appendChild(li);
   });
 }
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        window.location.href = '/index.html';
+    });
