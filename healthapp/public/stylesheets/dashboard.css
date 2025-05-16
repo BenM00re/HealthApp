@@ -540,6 +540,15 @@ footer p {
     .hamburger {
         display: block;
     }
+      .features {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+  .features_box {
+    flex: 1 1 100%;
+  }
 
 
 }
