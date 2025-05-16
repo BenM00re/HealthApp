@@ -90,7 +90,7 @@ loadButton.addEventListener("click", async () => {
 
       planDiv.appendChild(ul);
 
-      // ✅ Add delete button
+      // Add delete button
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete Plan";
       deleteButton.addEventListener("click", async () => {
@@ -138,3 +138,8 @@ function renderExerciseList() {
     exerciseList.appendChild(li);
   });
 }
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        window.location.href = '/index.html';
+    });
