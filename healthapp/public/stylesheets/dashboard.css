@@ -527,3 +527,34 @@ body {
     transform: translateY(-2px) scale(1.04);
     box-shadow: 0 4px 16px rgba(255,90,54,0.15);
 }
+
+.add-exercise-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #00C48C 0%, #468fe2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    margin: 1.5rem auto 0 auto;
+    box-shadow: 0 2px 8px rgba(70,143,226,0.10);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.add-exercise-btn:hover {
+    background: linear-gradient(90deg, #468fe2 0%, #00C48C 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(0,196,140,0.15);
+}
+
+.add-exercise-btn .plus-icon {
+    font-size: 1.3em;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 0.3em;
+}
