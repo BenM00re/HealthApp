@@ -37,6 +37,7 @@ router.get("/", ensureAuthenticated, async (req, res) => {
   try {
     const plans = await ExercisePlan.find({ user: req.user._id }).sort({ createdAt: -1 });
     res.json({ success: true, plans });
+    console.log(plans);
   } catch (err) {
     console.error("Error loading plans:", err);
     res.status(500).json({ success: false, error: "Failed to load plans" });

@@ -5,38 +5,44 @@ const savedPlansDiv = document.getElementById("saved-plans");
 
 let exercises = [];
 
-// Handle logout
-document.addEventListener("DOMContentLoaded", function () {
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      window.location.href = "/index.html";
-    });
-  }
-
-  loadPlans(); // Automatically load saved plans on page load
+// Load saved plans immediately on page load
+document.addEventListener("DOMContentLoaded", () => {
+  loadPlans();
 });
 
-// Handle new exercise submission
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const name = document.getElementById("exercise-name").value.trim();
   const sets = parseInt(document.getElementById("sets").value);
   const reps = parseInt(document.getElementById("reps").value);
+  const weightInput = document.getElementById("weight").value.trim();
+  const unit = document.getElementById("unit").value;
 
   if (!name || sets < 1 || reps < 1) {
     alert("Please enter valid values.");
     return;
   }
 
+  // Parse weight if provided
+  const weight = weightInput === "" ? null : parseFloat(weightInput);
+  if (weight !== null && (isNaN(weight) || weight < 0)) {
+    alert("Please enter a valid non-negative number for weight.");
+    return;
+  }
+
   const exercise = { name, sets, reps };
+
+  if (weight !== null) {
+    exercise.weight = weight;
+    exercise.unit = unit;
+  }
+
   exercises.push(exercise);
   renderExerciseList();
   form.reset();
 });
 
-// Save workout plan
 saveButton.addEventListener("click", async () => {
   if (exercises.length === 0) {
     alert("You must add at least one exercise before saving a plan.");
@@ -47,10 +53,10 @@ saveButton.addEventListener("click", async () => {
     const response = await fetch("/api/exercises", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       credentials: "include",
-      body: JSON.stringify({ exercises }),
+      body: JSON.stringify({ exercises })
     });
 
     const contentType = response.headers.get("Content-Type");
@@ -64,7 +70,7 @@ saveButton.addEventListener("click", async () => {
       alert("Workout plan saved successfully!");
       exercises = [];
       renderExerciseList();
-      loadPlans(); // Refresh plans
+      loadPlans();
     } else {
       alert("Failed to save workout plan.");
     }
@@ -73,36 +79,11 @@ saveButton.addEventListener("click", async () => {
   }
 });
 
-// Render exercise input list
-function renderExerciseList() {
-  exerciseList.innerHTML = "";
-
-  const template = document.getElementById("exercise-item-template");
-
-  exercises.forEach((ex, index) => {
-    const clone = template.content.cloneNode(true);
-    const li = clone.querySelector("li");
-    const textSpan = clone.querySelector(".exercise-text");
-    const removeBtn = clone.querySelector(".remove-btn");
-
-    textSpan.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps`;
-
-    removeBtn.addEventListener("click", () => {
-      exercises.splice(index, 1);
-      renderExerciseList();
-    });
-
-    exerciseList.appendChild(li);
-  });
-}
-
-// Load all saved plans on page load
 async function loadPlans() {
   try {
     const response = await fetch("/api/exercises", {
-      credentials: "include",
+      credentials: "include"
     });
-
     const result = await response.json();
 
     if (!result.success) {
@@ -124,14 +105,16 @@ async function loadPlans() {
       plan.exercises.forEach((ex) => {
         const li = document.createElement("li");
 
-        const weightText = ex.weight && ex.unit ? ` @ ${ex.weight} ${ex.unit}` : "";
-        li.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps${weightText}`;
+        const hasWeight = ex.weight !== null && ex.weight !== undefined && ex.unit.length > 0;
+        const weightText = hasWeight ? ` @ ${ex.weight} ${ex.unit}` : "";
 
+        li.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps${weightText}`;
         ul.appendChild(li);
       });
 
       planDiv.appendChild(ul);
 
+      // Delete button
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete Plan";
       deleteButton.className = "delete-plan-btn";
@@ -140,7 +123,7 @@ async function loadPlans() {
           try {
             const deleteRes = await fetch(`/api/exercises/${plan._id}`, {
               method: "DELETE",
-              credentials: "include",
+              credentials: "include"
             });
 
             const contentType = deleteRes.headers.get("Content-Type");
@@ -152,7 +135,7 @@ async function loadPlans() {
             const deleteResult = await deleteRes.json();
             if (deleteResult.success) {
               alert("Plan deleted.");
-              loadPlans(); // Reload after delete
+              loadPlans();
             } else {
               alert("Failed to delete plan.");
             }
@@ -170,4 +153,29 @@ async function loadPlans() {
     console.error("Error loading plans:", err);
     alert("An error occurred while loading plans.");
   }
+}
+
+function renderExerciseList() {
+  exerciseList.innerHTML = "";
+
+  const template = document.getElementById("exercise-item-template");
+
+  exercises.forEach((ex, index) => {
+    const clone = template.content.cloneNode(true);
+    const li = clone.querySelector("li");
+    const textSpan = clone.querySelector(".exercise-text");
+    const removeBtn = clone.querySelector(".remove-btn");
+
+    const hasWeight = ex.weight !== null && ex.weight !== undefined && ex.unit;
+    const weightText = hasWeight ? ` @ ${ex.weight} ${ex.unit}` : "";
+
+    textSpan.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps${weightText}`;
+
+    removeBtn.addEventListener("click", () => {
+      exercises.splice(index, 1);
+      renderExerciseList();
+    });
+
+    exerciseList.appendChild(li);
+  });
 }

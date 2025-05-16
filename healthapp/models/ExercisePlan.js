@@ -10,7 +10,9 @@ const ExercisePlanSchema = new mongoose.Schema({
     {
       name: String,
       sets: Number,
-      reps: Number
+      reps: Number,
+      weight: Number,
+      unit: String
     }
   ],
   createdAt: {

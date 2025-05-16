@@ -512,9 +512,13 @@ function loadExercisePlansToDashboard() {
                 planDiv.appendChild(title);
 
                 const ul = document.createElement("ul");
-                plan.exercises.forEach(ex => {
+                plan.exercises.forEach((ex) => {
                     const li = document.createElement("li");
-                    li.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps`;
+
+                    const hasWeight = ex.weight !== null && ex.weight !== undefined && ex.unit.length > 0;
+                    const weightText = hasWeight ? ` @ ${ex.weight} ${ex.unit}` : "";
+
+                    li.textContent = `${ex.name} - ${ex.sets} sets x ${ex.reps} reps${weightText}`;
                     ul.appendChild(li);
                 });
                 planDiv.appendChild(ul);
