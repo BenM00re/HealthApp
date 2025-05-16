@@ -394,6 +394,7 @@ footer p {
   .hamburger {
     display: block;
   }
+  
   .features {
     display: flex;
     flex-direction: column;
