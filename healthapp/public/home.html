@@ -4,28 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="stylesheets/style.css">
+  <link rel="stylesheet" href="stylesheets/dashboard.css">
   <title>Home | Helf</title>
 </head>
 
 <body><!-- Header + navbar-->
-<header>
-  <nav class="navbar">
-    <div class="logo">Helf</div>
-    <input type="checkbox" id="menu-toggle" class="menu-toggle" />
-    <label for="menu-toggle" class="hamburger">&#9776;</label>
-    <ul class="menu-links">
-      <li><a href="home.html">Home</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="food.html">Food</a></li>
-      <li><a href="exercise.html">Exercise</a></li>
-      <li><a href="profile.html">Profile</a></li>
-    </ul>
-  </nav>
+<header class="dashboard-header">
+    <div class="container">
+        <h1>Helf</h1>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+        <label for="menu-toggle" class="hamburger">&#9776;</label>
+        <nav>
+            <a href="home.html" class="active">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="food.html">Food</a>
+            <a href="exercise.html">Exercise</a>
+            <a href="profile.html">Profile</a>
+            <button id="logoutBtn">Logout</button>
+        </nav>
+    </div>
 </header>
 
 
-<main>
+<main class="container">
+  <section class="welcome_block">
+    <div class="welcome_text">
+      <h2>Welcome, <span id="welcome-username">User</span>!</h2>
+      <p>Home Page advertising the app</p>
+    </div>
+  </section>
 
   <!-- gym background picture -->
   <section class="gym_pic">
@@ -35,6 +42,7 @@
       <a class="sign-up-button" href="dashboard.html">View your Journey!</a>
     </div>
   </section>
+
   <section class="features">
     <article class="features_box">
       <h1> Fitness Track </h1>
@@ -67,9 +75,13 @@
     </div>
   </section>
 
+</main>
+
 <footer>
   <p>2025 Healthapp</p>
 </footer>
+
+<script src="/js/dashboard.js"></script>
 
 </body>
 </html>
